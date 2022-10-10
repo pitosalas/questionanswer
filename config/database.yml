@@ -82,5 +82,5 @@ test:
 production:
   <<: *default
   database: questionanswer_production
-  username: questionanswer
-  password: <%= ENV["QUESTIONANSWER_DATABASE_PASSWORD"] %>
+  username: rails
+  password: <%= ENV["POSTGRES_PASSWORD"] %>
