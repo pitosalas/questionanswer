@@ -3,7 +3,7 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-    service:
+    services:
       db:
         image: postgres:11
         port: ['5432:5432']
