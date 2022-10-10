@@ -24,10 +24,9 @@ jobs:
           ruby-version: 3.1.x
       - name: Build and run tests
         env: 
-          DATABASE_URL: postgres://postgres:@localhost:5432/test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/test
           RAILS_ENV: test
           RAILS_MASTER_KET: ${{ secrets.RAILS_MASTER_KEY }}
-          POSTGRES_PASSWORD: postgres
         run: |
           sudo apt-get yqq install libpq-dev
           gem install bundler
