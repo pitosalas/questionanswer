@@ -11122,3 +11122,49 @@ Processing by QuestionsController#index as HTML
 Completed 200 OK in 691ms (Views: 690.4ms | ActiveRecord: 460.0ms | Allocations: 14753)
 
 
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2211357925691338725)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(2211357925691338725)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/" for 127.0.0.1 at 2022-10-10 12:14:49 -0400
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.5ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (40.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 54.2ms | Allocations: 6290)
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 1]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.6ms | Allocations: 907)
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 3]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 2.0ms | Allocations: 811)
+  Rendered questions/index.html.erb within layouts/application (Duration: 77.0ms | Allocations: 13908)
+  Rendered layout layouts/application.html.erb (Duration: 83.2ms | Allocations: 16543)
+Completed 200 OK in 99ms (Views: 36.6ms | ActiveRecord: 49.7ms | Allocations: 22517)
+
+
+Started GET "/" for 127.0.0.1 at 2022-10-10 12:14:51 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.5ms | Allocations: 936)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 1]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.0ms | Allocations: 808)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 3]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 0.9ms | Allocations: 808)
+  Rendered questions/index.html.erb within layouts/application (Duration: 5.3ms | Allocations: 3653)
+  Rendered layout layouts/application.html.erb (Duration: 6.4ms | Allocations: 4297)
+Completed 200 OK in 7ms (Views: 6.2ms | ActiveRecord: 0.6ms | Allocations: 4640)
+
+
