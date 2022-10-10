@@ -4,9 +4,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     services:
-      db:
-        image: postgres:latest
-        ports: ['5432:5432']
+      postgres:
+        image: postgres:11-alpine
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_DB: rails_test
+          POSTGRES_USER: rails
+          POSTGRES_PASSWORD: password
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
