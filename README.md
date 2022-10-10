@@ -5,7 +5,12 @@ recommended in Rails as outlined in the [Rauby On Rails Guides to Testing Rails 
 
 ## Rails Commands Used
 
-`rails new questionanswer`
-`rails generate scaffold asked question:string answer:string`
-`rails db:create`
-`rails db:migrate`
+* `rails new questionanswer`
+* `rails generate scaffold asked question:string answer:string`
+* `rails db:create`
+* `rails db:migrate`
+
+## Github Actions
+
+I will also be using this to demonstrate using Github Actions for CI/CD
+
