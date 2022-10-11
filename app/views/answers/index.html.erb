@@ -1,7 +1,7 @@
 <p style="color: green"><%= notice %></p>
 
 <h1>Answers</h1>
-
+<h2>Answers to: <%= @question.question %> </h2>
 <div id="answers">
   <% @answers.each do |answer| %>
     <%= render answer %>

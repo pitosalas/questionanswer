@@ -25496,3 +25496,994 @@ Redirected to http://www.example.com/questions/525858932/answers/785061899
 Completed 302 Found in 14ms (ActiveRecord: 1.0ms | Allocations: 4463)
   [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers"[0m
   [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.7ms)[0m  [1m[35mALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (5.7ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-11 14:11:38.006251', '2022-10-11 14:11:38.006251'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-11 14:11:38.006251', '2022-10-11 14:11:38.006251'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-11 14:11:38.006251', '2022-10-11 14:11:38.006251'), (116873999, NULL, DEFAULT, '2022-10-11 14:11:38.006251', '2022-10-11 14:11:38.006251');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-11 14:11:38.024333', '2022-10-11 14:11:38.024333'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-11 14:11:38.024333', '2022-10-11 14:11:38.024333');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-11 14:11:38.027614', '2022-10-11 14:11:38.027614'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-11 14:11:38.027614', '2022-10-11 14:11:38.027614')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (17.9ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------------------------
+AnswerTest: test_simple_create_a_single_standalone_answer
+---------------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.1ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "This is a test question"], ["body", nil], ["created_at", "2022-10-11 14:11:38.068670"], ["updated_at", "2022-10-11 14:11:38.068670"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (9.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (4.3ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "This is a test answer"], ["question_id", 848806247], ["created_at", "2022-10-11 14:11:38.095180"], ["updated_at", "2022-10-11 14:11:38.095180"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (25.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------
+AnswersControllerTest: test_should_show_answer
+----------------------------------------------
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+Started GET "/questions/525858932/answers.785061898" for 127.0.0.1 at 2022-10-11 10:11:38 -0400
+Processing by AnswersController#index as */*
+  Parameters: {"question_id"=>"525858932"}
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering answers/index.html.erb within layouts/application
+  [1m[36mAnswer Load (0.8ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered answers/_answer.html.erb (Duration: 0.3ms | Allocations: 241)
+  Rendered answers/index.html.erb within layouts/application (Duration: 8.7ms | Allocations: 2260)
+  Rendered layout layouts/application.html.erb (Duration: 10.0ms | Allocations: 4638)
+Completed 200 OK in 22ms (Views: 12.8ms | ActiveRecord: 1.1ms | Allocations: 9897)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------------
+AnswersControllerTest: test_should_update_answer
+------------------------------------------------
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------------
+AnswersControllerTest: test_should_destroy_answer
+-------------------------------------------------
+  [1m[36mAnswer Load (0.3ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Count (1.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "questions"[0m
+AnswersControllerTest - test_should_destroy_answer: NoMethodError raised.
+If you expected this exception, use `assert_raises` as near to the code that raises as possible.
+Other block based assertions (e.g. `assert_difference`) can be used, as long as `assert_raises` is inside their block.
+
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------
+AnswersControllerTest: test_should_get_edit
+-------------------------------------------
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+Started GET "/questions/525858932/answers/785061898/edit" for 127.0.0.1 at 2022-10-11 10:11:38 -0400
+Processing by AnswersController#edit as HTML
+  Parameters: {"question_id"=>"525858932", "id"=>"785061898"}
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mCACHE Question Load (0.0ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering answers/edit.html.erb within layouts/application
+  Rendered answers/_form.html.erb (Duration: 10.1ms | Allocations: 4935)
+  Rendered answers/edit.html.erb within layouts/application (Duration: 10.7ms | Allocations: 5339)
+  Rendered layout layouts/application.html.erb (Duration: 10.9ms | Allocations: 5834)
+Completed 200 OK in 12ms (Views: 11.1ms | ActiveRecord: 0.2ms | Allocations: 6639)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------------
+AnswersControllerTest: test_should_create_answer
+------------------------------------------------
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.5ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers"[0m
+Started POST "/questions/525858932/answers" for 127.0.0.1 at 2022-10-11 10:11:38 -0400
+Processing by AnswersController#create as HTML
+  Parameters: {"answer"=>{"body"=>"I have no idea!", "question_id"=>"525858932"}, "question_id"=>"525858932"}
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.3ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "I have no idea!"], ["question_id", 525858932], ["created_at", "2022-10-11 14:11:38.518793"], ["updated_at", "2022-10-11 14:11:38.518793"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/questions/525858932/answers/785061900
+Completed 302 Found in 2ms (ActiveRecord: 0.7ms | Allocations: 1373)
+  [1m[36mAnswer Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------
+AnswersControllerTest: test_should_get_index
+--------------------------------------------
+  [1m[36mAnswer Load (1.6ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+Started GET "/questions/525858932/answers.785061898" for 127.0.0.1 at 2022-10-11 10:11:38 -0400
+Processing by AnswersController#index as */*
+  Parameters: {"question_id"=>"525858932"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering answers/index.html.erb within layouts/application
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered answers/_answer.html.erb (Duration: 0.0ms | Allocations: 20)
+  Rendered answers/index.html.erb within layouts/application (Duration: 0.9ms | Allocations: 429)
+  Rendered layout layouts/application.html.erb (Duration: 1.1ms | Allocations: 918)
+Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.3ms | Allocations: 1338)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+AnswersControllerTest: test_should_get_new
+------------------------------------------
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+Started GET "/questions/525858932/answers/new" for 127.0.0.1 at 2022-10-11 10:11:38 -0400
+Processing by AnswersController#new as HTML
+  Parameters: {"question_id"=>"525858932"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering answers/new.html.erb within layouts/application
+  Rendered answers/_form.html.erb (Duration: 1.4ms | Allocations: 843)
+  Rendered answers/new.html.erb within layouts/application (Duration: 2.1ms | Allocations: 1013)
+  Rendered layout layouts/application.html.erb (Duration: 2.2ms | Allocations: 1479)
+Completed 200 OK in 3ms (Views: 2.3ms | ActiveRecord: 0.1ms | Allocations: 2070)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------
+ValidQuestionTest: test_simple_word
+-----------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+QuestionTest: test_simple_invocation_of_word_utils
+--------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "What is the meaning of life, the universe, and everything?"], ["body", nil], ["created_at", "2022-10-11 14:11:38.533827"], ["updated_at", "2022-10-11 14:11:38.533827"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------
+QuestionRaterTest: test_simple_word
+-----------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------
+QuestionRaterTest: test_biggest_test_word
+-----------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------
+QuestionRaterTest: test_biggerr_test
+------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------------
+CommentTest: test_simple_create_a_single_standalone_comment
+-----------------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "This is a test question"], ["body", nil], ["created_at", "2022-10-11 14:11:38.537457"], ["updated_at", "2022-10-11 14:11:38.537457"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.3ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "This is a test answer"], ["question_id", 848806249], ["created_at", "2022-10-11 14:11:38.538300"], ["updated_at", "2022-10-11 14:11:38.538300"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mComment Create (0.4ms)[0m  [1m[32mINSERT INTO "comments" ("body", "answer_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "This is a test comment"], ["answer_id", 785061901], ["created_at", "2022-10-11 14:11:38.541927"], ["updated_at", "2022-10-11 14:11:38.541927"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+QuestionsControllerTest: test_should_show_question
+--------------------------------------------------
+  [1m[36mQuestion Load (0.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+Started GET "/questions/525858932" for 127.0.0.1 at 2022-10-11 10:11:38 -0400
+Processing by QuestionsController#show as HTML
+  Parameters: {"id"=>"525858932"}
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.3ms | Allocations: 178)
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_answer_inline.html.erb (Duration: 0.8ms | Allocations: 762)
+  Rendered questions/show.html.erb within layouts/application (Duration: 2.2ms | Allocations: 1915)
+  Rendered layout layouts/application.html.erb (Duration: 2.4ms | Allocations: 2478)
+Completed 200 OK in 4ms (Views: 2.8ms | ActiveRecord: 0.3ms | Allocations: 3485)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------------
+QuestionsControllerTest: test_should_update_question
+----------------------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+Started PATCH "/questions/525858932" for 127.0.0.1 at 2022-10-11 10:11:38 -0400
+Processing by QuestionsController#update as HTML
+  Parameters: {"question"=>{"question"=>"What is the answer to life the universe and everything?"}, "id"=>"525858932"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+Redirected to http://www.example.com/questions/525858932
+Completed 302 Found in 1ms (ActiveRecord: 0.1ms | Allocations: 708)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------
+QuestionsControllerTest: test_should_destroy_question
+-----------------------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+  [1m[36mQuestion Count (2.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "questions"[0m
+Started DELETE "/questions/525858932" for 127.0.0.1 at 2022-10-11 10:11:38 -0400
+Processing by QuestionsController#destroy as HTML
+  Parameters: {"id"=>"525858932"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mAnswer Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "answers" WHERE "answers"."question_id" = $1 LIMIT $2[0m  [["question_id", 525858932], ["LIMIT", 1]]
+Redirected to http://www.example.com/questions
+Completed 302 Found in 2ms (ActiveRecord: 0.3ms | Allocations: 725)
+  [1m[36mCACHE Question Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "questions"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------------
+QuestionsControllerTest: test_should_get_edit
+---------------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+Started GET "/questions/525858932/edit" for 127.0.0.1 at 2022-10-11 10:11:38 -0400
+Processing by QuestionsController#edit as HTML
+  Parameters: {"id"=>"525858932"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/edit.html.erb within layouts/application
+  Rendered questions/_form.html.erb (Duration: 1.1ms | Allocations: 1306)
+  Rendered questions/edit.html.erb within layouts/application (Duration: 1.6ms | Allocations: 1616)
+  Rendered layout layouts/application.html.erb (Duration: 1.8ms | Allocations: 2082)
+Completed 200 OK in 2ms (Views: 1.9ms | ActiveRecord: 0.1ms | Allocations: 2488)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------------
+QuestionsControllerTest: test_should_create_question
+----------------------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+  [1m[36mQuestion Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "questions"[0m
+Started POST "/questions" for 127.0.0.1 at 2022-10-11 10:11:38 -0400
+Processing by QuestionsController#create as HTML
+  Parameters: {"question"=>{"question"=>"What is the answer to life the universe and everything?"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "What is the answer to life the universe and everything?"], ["body", nil], ["created_at", "2022-10-11 14:11:38.566627"], ["updated_at", "2022-10-11 14:11:38.566627"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/questions/848806250
+Completed 302 Found in 1ms (ActiveRecord: 0.3ms | Allocations: 667)
+  [1m[36mQuestion Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "questions"[0m
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" ORDER BY "questions"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------
+QuestionsControllerTest: test_should_get_index
+----------------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.0ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+Started GET "/questions" for 127.0.0.1 at 2022-10-11 10:11:38 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (1.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 2.7ms | Allocations: 539)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.6ms | Allocations: 338)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.3ms | Allocations: 339)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.3ms | Allocations: 337)
+  Rendered questions/index.html.erb within layouts/application (Duration: 4.9ms | Allocations: 2215)
+  Rendered layout layouts/application.html.erb (Duration: 5.2ms | Allocations: 2689)
+Completed 200 OK in 6ms (Views: 2.8ms | ActiveRecord: 2.5ms | Allocations: 3025)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------
+QuestionsControllerTest: test_should_get_new
+--------------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.0ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+Started GET "/questions/new" for 127.0.0.1 at 2022-10-11 10:11:38 -0400
+Processing by QuestionsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/new.html.erb within layouts/application
+  Rendered questions/_form.html.erb (Duration: 0.5ms | Allocations: 768)
+  Rendered questions/new.html.erb within layouts/application (Duration: 0.8ms | Allocations: 966)
+  Rendered layout layouts/application.html.erb (Duration: 1.2ms | Allocations: 1440)
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.0ms | Allocations: 1730)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.0ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-11 14:14:57.464144', '2022-10-11 14:14:57.464144'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-11 14:14:57.464144', '2022-10-11 14:14:57.464144'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-11 14:14:57.464144', '2022-10-11 14:14:57.464144'), (116873999, NULL, DEFAULT, '2022-10-11 14:14:57.464144', '2022-10-11 14:14:57.464144');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-11 14:14:57.468304', '2022-10-11 14:14:57.468304'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-11 14:14:57.468304', '2022-10-11 14:14:57.468304');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-11 14:14:57.471931', '2022-10-11 14:14:57.471931'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-11 14:14:57.471931', '2022-10-11 14:14:57.471931')[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (11.8ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------
+ValidQuestionTest: test_simple_word
+-----------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-------------------------------
+ValidQuestionTest: test_no_word
+-------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.3ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-11 14:27:32.197201', '2022-10-11 14:27:32.197201'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-11 14:27:32.197201', '2022-10-11 14:27:32.197201'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-11 14:27:32.197201', '2022-10-11 14:27:32.197201'), (116873999, NULL, DEFAULT, '2022-10-11 14:27:32.197201', '2022-10-11 14:27:32.197201');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-11 14:27:32.201728', '2022-10-11 14:27:32.201728'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-11 14:27:32.201728', '2022-10-11 14:27:32.201728');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-11 14:27:32.205458', '2022-10-11 14:27:32.205458'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-11 14:27:32.205458', '2022-10-11 14:27:32.205458')[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (19.8ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+QuestionTest: test_simple_invocation_of_word_utils
+--------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:27:32.246935"], ["updated_at", "2022-10-11 14:27:32.246935"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.1ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "What is the meaning of life, the universe, and everything?"], ["body", nil], ["created_at", "2022-10-11 14:27:32.248007"], ["updated_at", "2022-10-11 14:27:32.248007"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionTest: test_association_with_answer
+------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.1ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:27:32.249008"], ["updated_at", "2022-10-11 14:27:32.249008"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mAnswer Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806249]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.4ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "Hello Hello"], ["question_id", 848806249], ["created_at", "2022-10-11 14:27:32.266592"], ["updated_at", "2022-10-11 14:27:32.266592"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1 /* loading for inspect */ LIMIT $2[0m  [["question_id", 848806249], ["LIMIT", 11]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1 /* loading for inspect */ LIMIT $2[0m  [["question_id", 848806249], ["LIMIT", 11]]
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.7ms)[0m  [1m[35mALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (1.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.1ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-11 14:27:53.600786', '2022-10-11 14:27:53.600786'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-11 14:27:53.600786', '2022-10-11 14:27:53.600786'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-11 14:27:53.600786', '2022-10-11 14:27:53.600786'), (116873999, NULL, DEFAULT, '2022-10-11 14:27:53.600786', '2022-10-11 14:27:53.600786');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-11 14:27:53.606348', '2022-10-11 14:27:53.606348'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-11 14:27:53.606348', '2022-10-11 14:27:53.606348');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-11 14:27:53.608986', '2022-10-11 14:27:53.608986'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-11 14:27:53.608986', '2022-10-11 14:27:53.608986')[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (9.2ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionTest: test_association_with_answer
+------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:27:53.639379"], ["updated_at", "2022-10-11 14:27:53.639379"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mAnswer Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806247]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.4ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "Hello Hello"], ["question_id", 848806247], ["created_at", "2022-10-11 14:27:53.659857"], ["updated_at", "2022-10-11 14:27:53.659857"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mAnswer Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806247]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+QuestionTest: test_simple_invocation_of_word_utils
+--------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:27:53.662360"], ["updated_at", "2022-10-11 14:27:53.662360"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "What is the meaning of life, the universe, and everything?"], ["body", nil], ["created_at", "2022-10-11 14:27:53.662933"], ["updated_at", "2022-10-11 14:27:53.662933"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.8ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-11 14:28:45.356516', '2022-10-11 14:28:45.356516'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-11 14:28:45.356516', '2022-10-11 14:28:45.356516'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-11 14:28:45.356516', '2022-10-11 14:28:45.356516'), (116873999, NULL, DEFAULT, '2022-10-11 14:28:45.356516', '2022-10-11 14:28:45.356516');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-11 14:28:45.361022', '2022-10-11 14:28:45.361022'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-11 14:28:45.361022', '2022-10-11 14:28:45.361022');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-11 14:28:45.363445', '2022-10-11 14:28:45.363445'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-11 14:28:45.363445', '2022-10-11 14:28:45.363445')[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (7.5ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+QuestionTest: test_simple_invocation_of_word_utils
+--------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.3ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:28:45.393417"], ["updated_at", "2022-10-11 14:28:45.393417"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "What is the meaning of life, the universe, and everything?"], ["body", nil], ["created_at", "2022-10-11 14:28:45.394747"], ["updated_at", "2022-10-11 14:28:45.394747"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------
+QuestionTest: test_answe_knows_its_questiion
+--------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.1ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:28:45.396014"], ["updated_at", "2022-10-11 14:28:45.396014"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.5ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "Hello Hello"], ["question_id", 848806249], ["created_at", "2022-10-11 14:28:45.414484"], ["updated_at", "2022-10-11 14:28:45.414484"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionTest: test_association_with_answer
+------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:28:45.416408"], ["updated_at", "2022-10-11 14:28:45.416408"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806250]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.2ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "Hello Hello"], ["question_id", 848806250], ["created_at", "2022-10-11 14:28:45.417615"], ["updated_at", "2022-10-11 14:28:45.417615"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806250]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.7ms)[0m  [1m[35mALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.0ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-11 14:29:50.571807', '2022-10-11 14:29:50.571807'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-11 14:29:50.571807', '2022-10-11 14:29:50.571807'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-11 14:29:50.571807', '2022-10-11 14:29:50.571807'), (116873999, NULL, DEFAULT, '2022-10-11 14:29:50.571807', '2022-10-11 14:29:50.571807');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-11 14:29:50.576467', '2022-10-11 14:29:50.576467'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-11 14:29:50.576467', '2022-10-11 14:29:50.576467');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-11 14:29:50.578601', '2022-10-11 14:29:50.578601'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-11 14:29:50.578601', '2022-10-11 14:29:50.578601')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (7.6ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionTest: test_association_with_answer
+------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:29:50.606351"], ["updated_at", "2022-10-11 14:29:50.606351"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806247]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.4ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "Hello Hello"], ["question_id", 848806247], ["created_at", "2022-10-11 14:29:50.619359"], ["updated_at", "2022-10-11 14:29:50.619359"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806247]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+QuestionTest: test_simple_invocation_of_word_utils
+--------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.1ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:29:50.621221"], ["updated_at", "2022-10-11 14:29:50.621221"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.1ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "What is the meaning of life, the universe, and everything?"], ["body", nil], ["created_at", "2022-10-11 14:29:50.621792"], ["updated_at", "2022-10-11 14:29:50.621792"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------------
+QuestionTest: test_answer_knows_its_questiion
+---------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.1ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:29:50.623132"], ["updated_at", "2022-10-11 14:29:50.623132"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.1ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "Hello Hello"], ["question_id", 848806250], ["created_at", "2022-10-11 14:29:50.623826"], ["updated_at", "2022-10-11 14:29:50.623826"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.3ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-11 14:31:38.355940', '2022-10-11 14:31:38.355940'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-11 14:31:38.355940', '2022-10-11 14:31:38.355940'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-11 14:31:38.355940', '2022-10-11 14:31:38.355940'), (116873999, NULL, DEFAULT, '2022-10-11 14:31:38.355940', '2022-10-11 14:31:38.355940');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-11 14:31:38.361622', '2022-10-11 14:31:38.361622'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-11 14:31:38.361622', '2022-10-11 14:31:38.361622');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-11 14:31:38.364312', '2022-10-11 14:31:38.364312'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-11 14:31:38.364312', '2022-10-11 14:31:38.364312')[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (10.3ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+QuestionTest: test_simple_invocation_of_word_utils
+--------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:31:38.395734"], ["updated_at", "2022-10-11 14:31:38.395734"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.1ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "What is the meaning of life, the universe, and everything?"], ["body", nil], ["created_at", "2022-10-11 14:31:38.396833"], ["updated_at", "2022-10-11 14:31:38.396833"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------------
+QuestionTest: test_answer_knows_its_questiion
+---------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.1ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:31:38.397785"], ["updated_at", "2022-10-11 14:31:38.397785"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.5ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "Hello Hello"], ["question_id", 848806249], ["created_at", "2022-10-11 14:31:38.404963"], ["updated_at", "2022-10-11 14:31:38.404963"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionTest: test_association_with_answer
+------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:31:38.406509"], ["updated_at", "2022-10-11 14:31:38.406509"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806250]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.4ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "Hello Hello"], ["question_id", 848806250], ["created_at", "2022-10-11 14:31:38.407773"], ["updated_at", "2022-10-11 14:31:38.407773"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806250]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.8ms)[0m  [1m[35mALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.0ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-11 14:31:42.499293', '2022-10-11 14:31:42.499293'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-11 14:31:42.499293', '2022-10-11 14:31:42.499293'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-11 14:31:42.499293', '2022-10-11 14:31:42.499293'), (116873999, NULL, DEFAULT, '2022-10-11 14:31:42.499293', '2022-10-11 14:31:42.499293');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-11 14:31:42.503495', '2022-10-11 14:31:42.503495'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-11 14:31:42.503495', '2022-10-11 14:31:42.503495');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-11 14:31:42.505701', '2022-10-11 14:31:42.505701'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-11 14:31:42.505701', '2022-10-11 14:31:42.505701')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (7.2ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+QuestionTest: test_simple_invocation_of_word_utils
+--------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:31:42.534707"], ["updated_at", "2022-10-11 14:31:42.534707"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.1ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "What is the meaning of life, the universe, and everything?"], ["body", nil], ["created_at", "2022-10-11 14:31:42.536612"], ["updated_at", "2022-10-11 14:31:42.536612"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionTest: test_association_with_answer
+------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.1ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:31:42.537841"], ["updated_at", "2022-10-11 14:31:42.537841"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806249]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.3ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "Hello Hello"], ["question_id", 848806249], ["created_at", "2022-10-11 14:31:42.545778"], ["updated_at", "2022-10-11 14:31:42.545778"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806249]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------------
+QuestionTest: test_answer_knows_its_questiion
+---------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.1ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:31:42.547640"], ["updated_at", "2022-10-11 14:31:42.547640"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.2ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "Hello Hello"], ["question_id", 848806250], ["created_at", "2022-10-11 14:31:42.548321"], ["updated_at", "2022-10-11 14:31:42.548321"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.0ms)[0m  [1m[35mALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (3.5ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-11 14:34:16.306720', '2022-10-11 14:34:16.306720'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-11 14:34:16.306720', '2022-10-11 14:34:16.306720'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-11 14:34:16.306720', '2022-10-11 14:34:16.306720'), (116873999, NULL, DEFAULT, '2022-10-11 14:34:16.306720', '2022-10-11 14:34:16.306720');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-11 14:34:16.311129', '2022-10-11 14:34:16.311129'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-11 14:34:16.311129', '2022-10-11 14:34:16.311129');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-11 14:34:16.314128', '2022-10-11 14:34:16.314128'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-11 14:34:16.314128', '2022-10-11 14:34:16.314128')[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (9.6ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionTest: test_association_with_answer
+------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.4ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-11 14:34:16.344777"], ["updated_at", "2022-10-11 14:34:16.344777"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806247]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.3ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "Hello Hello"], ["question_id", 848806247], ["created_at", "2022-10-11 14:34:16.351900"], ["updated_at", "2022-10-11 14:34:16.351900"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806247]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.2ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-11 14:35:21.924285', '2022-10-11 14:35:21.924285'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-11 14:35:21.924285', '2022-10-11 14:35:21.924285'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-11 14:35:21.924285', '2022-10-11 14:35:21.924285'), (116873999, NULL, DEFAULT, '2022-10-11 14:35:21.924285', '2022-10-11 14:35:21.924285');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-11 14:35:21.929569', '2022-10-11 14:35:21.929569'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-11 14:35:21.929569', '2022-10-11 14:35:21.929569');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-11 14:35:21.936129', '2022-10-11 14:35:21.936129'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-11 14:35:21.936129', '2022-10-11 14:35:21.936129')[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (8.2ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionTest: test_association_with_answer
+------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.8ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.8ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-11 14:36:02.204541', '2022-10-11 14:36:02.204541'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-11 14:36:02.204541', '2022-10-11 14:36:02.204541'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-11 14:36:02.204541', '2022-10-11 14:36:02.204541'), (116873999, NULL, DEFAULT, '2022-10-11 14:36:02.204541', '2022-10-11 14:36:02.204541');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-11 14:36:02.208694', '2022-10-11 14:36:02.208694'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-11 14:36:02.208694', '2022-10-11 14:36:02.208694');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-11 14:36:02.211500', '2022-10-11 14:36:02.211500'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-11 14:36:02.211500', '2022-10-11 14:36:02.211500')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (9.5ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionTest: test_association_with_answer
+------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.1ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-11 14:36:14.804175', '2022-10-11 14:36:14.804175'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-11 14:36:14.804175', '2022-10-11 14:36:14.804175'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-11 14:36:14.804175', '2022-10-11 14:36:14.804175'), (116873999, NULL, DEFAULT, '2022-10-11 14:36:14.804175', '2022-10-11 14:36:14.804175');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-11 14:36:14.808594', '2022-10-11 14:36:14.808594'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-11 14:36:14.808594', '2022-10-11 14:36:14.808594');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-11 14:36:14.811442', '2022-10-11 14:36:14.811442'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-11 14:36:14.811442', '2022-10-11 14:36:14.811442')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.2ms)[0m  [1m[35mALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (6.0ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionTest: test_association_with_answer
+------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m

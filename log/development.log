@@ -11191,3 +11191,188 @@ Completed 200 OK in 7ms (Views: 6.2ms | ActiveRecord: 0.6ms | Allocations: 4640)
   [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
   [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_advisory_unlock(4506126875573095500)[0m
   [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mQuestion Load (2.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mQuestion Load (1.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mQuestion Load (0.9ms)[0m  [1m[34mSELECT "questions".* FROM "questions" ORDER BY "questions"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mAnswer Load (5.7ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  [1m[36mQuestion Load (1.0ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[35mSQL (3.0ms)[0m  [1m[34mSELECT "questions"."id" AS t0_r0, "questions"."question" AS t0_r1, "questions"."body" AS t0_r2, "questions"."created_at" AS t0_r3, "questions"."updated_at" AS t0_r4, "answers"."id" AS t1_r0, "answers"."body" AS t1_r1, "answers"."question_id" AS t1_r2, "answers"."created_at" AS t1_r3, "answers"."updated_at" AS t1_r4 FROM "questions" LEFT OUTER JOIN "answers" ON "answers"."question_id" = "questions"."id" WHERE "answers"."id" IS NULL[0m
+  [1m[36mQuestion Load (1.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions" INNER JOIN "answers" ON "answers"."question_id" = "questions"."id" WHERE "answers"."id" IS NOT NULL[0m
+Started GET "/" for ::1 at 2022-10-11 10:37:48 -0400
+  [1m[36mActiveRecord::SchemaMigration Pluck (2.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (4.8ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (2.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 10.3ms | Allocations: 6276)
+  Rendered questions/index.html.erb within layouts/application (Duration: 30.0ms | Allocations: 11867)
+  Rendered layout layouts/application.html.erb (Duration: 34.9ms | Allocations: 14541)
+Completed 200 OK in 65ms (Views: 29.9ms | ActiveRecord: 17.0ms | Allocations: 20439)
+
+
+Started GET "/questions/2" for ::1 at 2022-10-11 10:38:05 -0400
+Processing by QuestionsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mQuestion Load (0.5ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/questions_controller.rb:69:in `set_question'
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.8ms | Allocations: 178)
+  [1m[36mAnswer Load (0.3ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_answer_inline.html.erb:1
+  Rendered questions/_answer_inline.html.erb (Duration: 23.6ms | Allocations: 14031)
+  Rendered questions/show.html.erb within layouts/application (Duration: 28.9ms | Allocations: 15436)
+  Rendered layout layouts/application.html.erb (Duration: 29.6ms | Allocations: 16068)
+Completed 200 OK in 45ms (Views: 30.2ms | ActiveRecord: 3.6ms | Allocations: 18195)
+
+
+Started GET "/" for ::1 at 2022-10-11 10:38:32 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.6ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 3.5ms | Allocations: 900)
+  Rendered questions/index.html.erb within layouts/application (Duration: 8.1ms | Allocations: 1875)
+  Rendered layout layouts/application.html.erb (Duration: 9.6ms | Allocations: 2485)
+Completed 200 OK in 12ms (Views: 9.5ms | ActiveRecord: 1.0ms | Allocations: 2807)
+
+
+Started GET "/" for ::1 at 2022-10-11 10:38:36 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.6ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (2.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 7.0ms | Allocations: 819)
+  Rendered questions/index.html.erb within layouts/application (Duration: 12.8ms | Allocations: 1684)
+  Rendered layout layouts/application.html.erb (Duration: 14.4ms | Allocations: 2292)
+Completed 200 OK in 17ms (Views: 12.0ms | ActiveRecord: 3.3ms | Allocations: 2568)
+
+
+Started GET "/" for ::1 at 2022-10-11 10:38:37 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.6ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (1.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 6.8ms | Allocations: 819)
+  Rendered questions/index.html.erb within layouts/application (Duration: 12.1ms | Allocations: 1693)
+  Rendered layout layouts/application.html.erb (Duration: 13.9ms | Allocations: 2301)
+Completed 200 OK in 17ms (Views: 13.2ms | ActiveRecord: 2.0ms | Allocations: 2577)
+
+
+Started GET "/questions/2" for ::1 at 2022-10-11 10:38:38 -0400
+Processing by QuestionsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/questions_controller.rb:69:in `set_question'
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.1ms | Allocations: 22)
+  [1m[36mAnswer Load (8.9ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_answer_inline.html.erb:1
+  Rendered questions/_answer_inline.html.erb (Duration: 13.1ms | Allocations: 987)
+  Rendered questions/show.html.erb within layouts/application (Duration: 15.1ms | Allocations: 1672)
+  Rendered layout layouts/application.html.erb (Duration: 16.1ms | Allocations: 2271)
+Completed 200 OK in 23ms (Views: 10.8ms | ActiveRecord: 9.2ms | Allocations: 3040)
+
+
+Started GET "/questions/1/answers" for ::1 at 2022-10-11 10:38:44 -0400
+Processing by AnswersController#index as HTML
+  Parameters: {"question_id"=>"1"}
+  [1m[36mQuestion Load (0.6ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/answers_controller.rb:3:in `index'
+Completed 404 Not Found in 3ms (ActiveRecord: 0.6ms | Allocations: 1093)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Question with 'id'=1):
+  
+app/controllers/answers_controller.rb:3:in `index'
+  [1m[36mQuestion Load (1.9ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+Started GET "/questions/2/answers" for ::1 at 2022-10-11 10:39:13 -0400
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AnswersController#index as HTML
+  Parameters: {"question_id"=>"2"}
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/answers_controller.rb:3:in `index'
+  Rendering layout layouts/application.html.erb
+  Rendering answers/index.html.erb within layouts/application
+  [1m[36mAnswer Load (0.7ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/answers/index.html.erb:6
+  Rendered answers/_answer.html.erb (Duration: 0.3ms | Allocations: 257)
+  Rendered answers/index.html.erb within layouts/application (Duration: 15.1ms | Allocations: 7020)
+  Rendered layout layouts/application.html.erb (Duration: 16.3ms | Allocations: 9598)
+Completed 200 OK in 62ms (Views: 9.2ms | ActiveRecord: 13.6ms | Allocations: 24489)
+
+
+Started GET "/questions/2/answers" for ::1 at 2022-10-11 10:41:41 -0400
+Processing by AnswersController#index as HTML
+  Parameters: {"question_id"=>"2"}
+  [1m[36mQuestion Load (0.9ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/answers_controller.rb:3:in `index'
+  Rendering layout layouts/application.html.erb
+  Rendering answers/index.html.erb within layouts/application
+  [1m[36mAnswer Load (0.9ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/answers/index.html.erb:6
+  Rendered answers/_answer.html.erb (Duration: 0.6ms | Allocations: 177)
+  Rendered answers/index.html.erb within layouts/application (Duration: 4.7ms | Allocations: 1705)
+  Rendered layout layouts/application.html.erb (Duration: 6.1ms | Allocations: 2627)
+Completed 200 OK in 12ms (Views: 6.9ms | ActiveRecord: 1.8ms | Allocations: 4167)
+
+
+Started GET "/questions/2/answers" for ::1 at 2022-10-11 10:42:06 -0400
+Processing by AnswersController#index as HTML
+  Parameters: {"question_id"=>"2"}
+  [1m[36mQuestion Load (0.6ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/answers_controller.rb:3:in `index'
+  Rendering layout layouts/application.html.erb
+  Rendering answers/index.html.erb within layouts/application
+  [1m[36mAnswer Load (1.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/answers/index.html.erb:6
+  Rendered answers/_answer.html.erb (Duration: 0.8ms | Allocations: 177)
+  Rendered answers/index.html.erb within layouts/application (Duration: 5.1ms | Allocations: 1710)
+  Rendered layout layouts/application.html.erb (Duration: 6.8ms | Allocations: 2632)
+Completed 200 OK in 13ms (Views: 8.2ms | ActiveRecord: 1.7ms | Allocations: 4074)
+
+
+Started GET "/" for ::1 at 2022-10-11 10:48:47 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 3.2ms | Allocations: 3415)
+  Rendered questions/index.html.erb within layouts/application (Duration: 17.8ms | Allocations: 9056)
+  Rendered layout layouts/application.html.erb (Duration: 18.8ms | Allocations: 11268)
+Completed 200 OK in 21ms (Views: 19.4ms | ActiveRecord: 6.6ms | Allocations: 13708)
+
+
+Started GET "/questions/2" for ::1 at 2022-10-11 10:51:15 -0400
+Processing by QuestionsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mQuestion Load (0.5ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/questions_controller.rb:69:in `set_question'
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.7ms | Allocations: 174)
+  [1m[36mAnswer Load (0.4ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_answer_inline.html.erb:1
+  Rendered questions/_answer_inline.html.erb (Duration: 5.6ms | Allocations: 3690)
+  Rendered questions/show.html.erb within layouts/application (Duration: 9.6ms | Allocations: 5015)
+  Rendered layout layouts/application.html.erb (Duration: 10.4ms | Allocations: 5615)
+Completed 200 OK in 16ms (Views: 10.6ms | ActiveRecord: 1.1ms | Allocations: 7158)
+
+

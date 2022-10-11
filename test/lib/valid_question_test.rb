@@ -5,4 +5,9 @@ class ValidQuestionTest < ActiveSupport::TestCase
     w = ValidQuestion.new "hello"
     assert w.valid?
   end
+
+  test "no word" do
+    w = ValidQuestion.new ""
+    refute w.valid?
+  end
 end
