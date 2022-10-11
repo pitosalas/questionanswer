@@ -1,29 +1,24 @@
 class AnswersController < ApplicationController
-  # GET /answers or /answers.json
   def index
     @question = Question.find(params[:question_id])
     @answers = @question.answers
   end
 
-  # GET /answers/1 or /answers/1.json
   def show
     @answer = Answer.find(params[:id])
     @question = @answer.question
   end
 
-  # GET /answers/new
   def new
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new
   end
 
-  # GET /answers/1/edit
   def edit
     @answer = Answer.find(params[:id])
     @question = @answer.question
   end
 
-  # POST /answers or /answers.json
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params)

@@ -10,8 +10,8 @@ jobs:
           - "5432:5432"
         env:
           POSTGRES_DB: rails_test
-          POSTGRES_USER: rails
-          POSTGRES_PASSWORD: password
+          POSTGRES_USER: pitosalas
+          POSTGRES_PASSWORD: ""
     steps:
       - uses: actions/checkout@v1
       - name: Setup Ruby

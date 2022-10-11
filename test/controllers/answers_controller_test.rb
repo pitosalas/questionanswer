@@ -3,33 +3,34 @@ require "test_helper"
 class AnswersControllerTest < ActionDispatch::IntegrationTest
   setup do
     @answer = answers(:no_idea)
+    @question = @answer.question
   end
 
   test "should get index" do
-    get answers_url
+    get question_answers_url(@question, @answer)
     assert_response :success
   end
 
   test "should get new" do
-    get new_answer_url
+    get new_question_answer_url(@question)
     assert_response :success
   end
 
   test "should create answer" do
     assert_difference("Answer.count") do
-      post answers_url, params: {answer: {body: @answer.body, question_id: @answer.question_id}}
+      post question_answers_url(@question), params: {answer: {body: @answer.body, question_id: @answer.question_id}}
     end
 
-    assert_redirected_to answer_url(Answer.last)
+    assert_redirected_to question_answer_url(@question, @answer)
   end
 
   test "should show answer" do
-    get answer_url(@answer)
+    get question_answers_url(@question, @answer)
     assert_response :success
   end
 
   test "should get edit" do
-    get edit_answer_url(@answer)
+    get edit_question_answer_url(@question, @answer)
     assert_response :success
   end
 
