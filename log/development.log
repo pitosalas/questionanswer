@@ -11376,3 +11376,183 @@ Processing by QuestionsController#show as HTML
 Completed 200 OK in 16ms (Views: 10.6ms | ActiveRecord: 1.1ms | Allocations: 7158)
 
 
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2211357925691338725)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateDeletemes (20221013191539)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (18.3ms)[0m  [1m[35mCREATE TABLE "deletemes" ("id" bigserial primary key, "name" text, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20221013191539"]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(2211357925691338725)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2211357925691338725)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_advisory_unlock(2211357925691338725)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/" for ::1 at 2022-10-13 16:31:47 -0400
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (5.7ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (1.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 40.6ms | Allocations: 6265)
+  Rendered questions/index.html.erb within layouts/application (Duration: 55.8ms | Allocations: 11859)
+  Rendered layout layouts/application.html.erb (Duration: 57.4ms | Allocations: 14533)
+Completed 200 OK in 64ms (Views: 41.9ms | ActiveRecord: 17.4ms | Allocations: 20431)
+
+
+Started GET "/questions/2" for ::1 at 2022-10-13 16:31:49 -0400
+Processing by QuestionsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mQuestion Load (0.8ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/questions_controller.rb:69:in `set_question'
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.7ms | Allocations: 178)
+  [1m[36mAnswer Load (0.4ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_answer_inline.html.erb:1
+  Rendered questions/_answer_inline.html.erb (Duration: 12.5ms | Allocations: 5039)
+  Rendered questions/show.html.erb within layouts/application (Duration: 17.1ms | Allocations: 6459)
+  Rendered layout layouts/application.html.erb (Duration: 17.7ms | Allocations: 7091)
+Completed 200 OK in 32ms (Views: 14.9ms | ActiveRecord: 4.3ms | Allocations: 9218)
+
+
+Started GET "/questions/2/edit" for ::1 at 2022-10-13 16:31:52 -0400
+Processing by QuestionsController#edit as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mQuestion Load (0.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/questions_controller.rb:69:in `set_question'
+  Rendering layout layouts/application.html.erb
+  Rendering questions/edit.html.erb within layouts/application
+  Rendered questions/_form.html.erb (Duration: 9.0ms | Allocations: 3349)
+  Rendered questions/edit.html.erb within layouts/application (Duration: 11.5ms | Allocations: 3751)
+  Rendered layout layouts/application.html.erb (Duration: 12.5ms | Allocations: 4382)
+Completed 200 OK in 21ms (Views: 13.0ms | ActiveRecord: 0.4ms | Allocations: 5369)
+
+
+Started PATCH "/questions/2" for ::1 at 2022-10-13 16:31:57 -0400
+Processing by QuestionsController#update as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "question"=>{"question"=>"How to prevent excel from appearing and disappearing?", "body"=>"No matter !!hat lang every time I have written code to use the excel object I always have this problem. Say I'm running a loop and within the loop I am opening & closing workbooks. I have the visible property on the Application class is set to false, while the loop is running I open an excel file from the file system manually then everything goes to hell. The problem I suspect is because when I opened the file manually it uses the same excel process that I instantiated in code, and excel will then show & hide for every file that it opens from the code until it is done. The problem is that I could also break the running code if I managed to close the excel window. Is there anyway to prevent the os from using the same process that I created in the code, Is there a way to keep the automated app isolated from other operation that involves the excel process so the 2 can not interfere with one another with the exception that if they happened to access the same file."}, "commit"=>"Update Question", "id"=>"2"}
+  [1m[36mQuestion Load (0.5ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/questions_controller.rb:69:in `set_question'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/questions_controller.rb:40:in `block in update'
+  [1m[36mQuestion Update (0.6ms)[0m  [1m[33mUPDATE "questions" SET "body" = $1, "updated_at" = $2 WHERE "questions"."id" = $3[0m  [["body", "No matter !!hat lang every time I have written code to use the excel object I always have this problem. Say I'm running a loop and within the loop I am opening & closing workbooks. I have the visible property on the Application class is set to false, while the loop is running I open an excel file from the file system manually then everything goes to hell. The problem I suspect is because when I opened the file manually it uses the same excel process that I instantiated in code, and excel will then show & hide for every file that it opens from the code until it is done. The problem is that I could also break the running code if I managed to close the excel window. Is there anyway to prevent the os from using the same process that I created in the code, Is there a way to keep the automated app isolated from other operation that involves the excel process so the 2 can not interfere with one another with the exception that if they happened to access the same file."], ["updated_at", "2022-10-13 20:31:57.250220"], ["id", 2]]
+  ↳ app/controllers/questions_controller.rb:40:in `block in update'
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/questions_controller.rb:40:in `block in update'
+Redirected to http://localhost:3002/questions/2
+Completed 302 Found in 10ms (ActiveRecord: 2.1ms | Allocations: 4491)
+
+
+Started GET "/questions/2" for ::1 at 2022-10-13 16:31:57 -0400
+Processing by QuestionsController#show as TURBO_STREAM
+  Parameters: {"id"=>"2"}
+  [1m[36mQuestion Load (0.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/questions_controller.rb:69:in `set_question'
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.1ms | Allocations: 25)
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_answer_inline.html.erb:1
+  Rendered questions/_answer_inline.html.erb (Duration: 1.3ms | Allocations: 1028)
+  Rendered questions/show.html.erb within layouts/application (Duration: 2.1ms | Allocations: 1839)
+  Rendered layout layouts/application.html.erb (Duration: 2.6ms | Allocations: 2462)
+Completed 200 OK in 5ms (Views: 2.7ms | ActiveRecord: 0.6ms | Allocations: 3306)
+
+
+Started GET "/questions/2/answers/2/edit" for ::1 at 2022-10-13 16:32:00 -0400
+Processing by AnswersController#edit as HTML
+  Parameters: {"question_id"=>"2", "id"=>"2"}
+  [1m[36mAnswer Load (0.4ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/answers_controller.rb:18:in `edit'
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/answers_controller.rb:19:in `edit'
+  Rendering layout layouts/application.html.erb
+  Rendering answers/edit.html.erb within layouts/application
+  Rendered answers/_form.html.erb (Duration: 4.0ms | Allocations: 2054)
+  Rendered answers/edit.html.erb within layouts/application (Duration: 5.3ms | Allocations: 2507)
+  Rendered layout layouts/application.html.erb (Duration: 6.2ms | Allocations: 3215)
+Completed 200 OK in 17ms (Views: 8.0ms | ActiveRecord: 0.7ms | Allocations: 6565)
+
+
+Started PATCH "/questions/2/answers/2" for ::1 at 2022-10-13 16:32:04 -0400
+Processing by AnswersController#update as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "answer"=>{"body"=>"Use the !!Application.ScreenUpdating property to avoid UI glitches in Excel. Turn screen updating off to speed up your macro code. You won't be able to see what the macro is doing, but it will run faster. Remember to set the ScreenUpdating property back to True when your macro ends", "question_id"=>"2"}, "commit"=>"Update Answer", "question_id"=>"2", "id"=>"2"}
+  [1m[36mQuestion Load (0.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/answers_controller.rb:39:in `update'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/answers_controller.rb:42:in `block in update'
+  [1m[36mAnswer Create (0.7ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "Use the !!Application.ScreenUpdating property to avoid UI glitches in Excel. Turn screen updating off to speed up your macro code. You won't be able to see what the macro is doing, but it will run faster. Remember to set the ScreenUpdating property back to True when your macro ends"], ["question_id", 2], ["created_at", "2022-10-13 20:32:04.318450"], ["updated_at", "2022-10-13 20:32:04.318450"]]
+  ↳ app/controllers/answers_controller.rb:42:in `block in update'
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/answers_controller.rb:42:in `block in update'
+Redirected to http://localhost:3002/questions/2
+Completed 302 Found in 10ms (ActiveRecord: 2.2ms | Allocations: 3736)
+
+
+Started GET "/questions/2" for ::1 at 2022-10-13 16:32:04 -0400
+Processing by QuestionsController#show as TURBO_STREAM
+  Parameters: {"id"=>"2"}
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/questions_controller.rb:69:in `set_question'
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.1ms | Allocations: 24)
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_answer_inline.html.erb:1
+  Rendered questions/_answer_inline.html.erb (Duration: 1.7ms | Allocations: 1282)
+  Rendered questions/show.html.erb within layouts/application (Duration: 2.8ms | Allocations: 2011)
+  Rendered layout layouts/application.html.erb (Duration: 3.3ms | Allocations: 2612)
+Completed 200 OK in 5ms (Views: 3.5ms | ActiveRecord: 0.4ms | Allocations: 3404)
+
+
+Started GET "/questions/2/answers/new" for ::1 at 2022-10-13 16:32:08 -0400
+Processing by AnswersController#new as HTML
+  Parameters: {"question_id"=>"2"}
+  [1m[36mQuestion Load (0.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/answers_controller.rb:13:in `new'
+  Rendering layout layouts/application.html.erb
+  Rendering answers/new.html.erb within layouts/application
+  Rendered answers/_form.html.erb (Duration: 2.1ms | Allocations: 1112)
+  Rendered answers/new.html.erb within layouts/application (Duration: 4.0ms | Allocations: 1304)
+  Rendered layout layouts/application.html.erb (Duration: 4.7ms | Allocations: 1903)
+Completed 200 OK in 22ms (Views: 5.3ms | ActiveRecord: 0.4ms | Allocations: 2912)
+
+
+Started POST "/questions/2/answers" for ::1 at 2022-10-13 16:32:15 -0400
+Processing by AnswersController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "answer"=>{"body"=>"I wonder what it means?", "question_id"=>"2"}, "commit"=>"Create Answer", "question_id"=>"2"}
+  [1m[36mQuestion Load (0.5ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/answers_controller.rb:23:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/answers_controller.rb:27:in `block in create'
+  [1m[36mAnswer Create (0.7ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "I wonder what it means?"], ["question_id", 2], ["created_at", "2022-10-13 20:32:15.480787"], ["updated_at", "2022-10-13 20:32:15.480787"]]
+  ↳ app/controllers/answers_controller.rb:27:in `block in create'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/answers_controller.rb:27:in `block in create'
+Redirected to http://localhost:3002/questions/2
+Completed 302 Found in 10ms (ActiveRecord: 2.1ms | Allocations: 2947)
+
+
+Started GET "/questions/2" for ::1 at 2022-10-13 16:32:15 -0400
+Processing by QuestionsController#show as TURBO_STREAM
+  Parameters: {"id"=>"2"}
+  [1m[36mQuestion Load (0.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/questions_controller.rb:69:in `set_question'
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.1ms | Allocations: 22)
+  [1m[36mAnswer Load (0.4ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_answer_inline.html.erb:1
+  Rendered questions/_answer_inline.html.erb (Duration: 2.6ms | Allocations: 1570)
+  Rendered questions/show.html.erb within layouts/application (Duration: 3.8ms | Allocations: 2270)
+  Rendered layout layouts/application.html.erb (Duration: 4.4ms | Allocations: 2869)
+Completed 200 OK in 7ms (Views: 4.4ms | ActiveRecord: 0.8ms | Allocations: 3629)
+
+

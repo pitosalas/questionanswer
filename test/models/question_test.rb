@@ -11,12 +11,12 @@ class QuestionTest < ActiveSupport::TestCase
 
   test "association with answer" do
     assert_equal 0, @q1.answers.count
-    @q1.answers.build(body: "Hello Hello")
+    @q1.answers.build(body: "Hello Hello").save
     assert_equal 1, @q1.answers.count
   end
 
   test "answer knows its questiion" do
-    a = @q1.answers.create(body: "Hello Hello")
+    a = @q1.answers.build(body: "Hello Hello")
     assert_equal @q1, a.question
   end
 end

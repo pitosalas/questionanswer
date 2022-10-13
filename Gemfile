@@ -69,5 +69,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
-end
+  gem 'minitest'
+  gem "factory_bot_rails"
+  end
 gem 'bootstrap', '~> 5.1.3'

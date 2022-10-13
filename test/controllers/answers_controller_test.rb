@@ -21,7 +21,7 @@ class AnswersControllerTest < ActionDispatch::IntegrationTest
       post question_answers_url(@question), params: {answer: {body: @answer.body, question_id: @answer.question_id}}
     end
 
-    assert_redirected_to question_answer_url(@question, @answer)
+    assert_redirected_to  question_url(@question)
   end
 
   test "should show answer" do
@@ -35,15 +35,17 @@ class AnswersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update answer" do
-    patch answer_url(@answer), params: {answer: {body: @answer.body, question_id: @answer.question_id}}
-    assert_redirected_to answer_url(@answer)
+    puts @answer.id
+    patch question_answer_url(@question, @answer), params: {answer: {body: @answer.body, question_id: @answer.question_id}}
+    puts @answer.id
+    assert_redirected_to question_url(@question)
   end
 
   test "should destroy answer" do
     assert_no_difference("Question.count") do
-      delete answer_url(@answer)
+      delete question_answer_url(@question, @answer)
     end
 
-    assert_redirected_to answers_url
+    assert_redirected_to question_url(@question)
   end
 end
