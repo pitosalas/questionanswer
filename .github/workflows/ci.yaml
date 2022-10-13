@@ -11,7 +11,6 @@ jobs:
         env:
           POSTGRES_DB: questionanswer_test
           POSTGRES_USER: pitosalas
-          POSTGRES_PASSWORD: ""
     steps:
       - uses: actions/checkout@v1
       - name: Setup Ruby
@@ -23,7 +22,6 @@ jobs:
           DATABASE_URL: postgres://pitosalas:@localhost:5432/questionanswer_test
           RAILS_ENV: test
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-          POSTGRES_PASSWORD: ""
         run: |
           sudo apt-get -yqq install libpq-dev
           gem install bundler
