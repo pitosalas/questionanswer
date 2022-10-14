@@ -37370,3 +37370,1559 @@ ValidQuestionTest: test_simple_word
 ValidQuestionTest: test_no_word
 -------------------------------
   [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (5.8ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "deletemes" DISABLE TRIGGER ALL;ALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.4ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-14 13:54:59.182829', '2022-10-14 13:54:59.182829'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-14 13:54:59.182829', '2022-10-14 13:54:59.182829'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-14 13:54:59.182829', '2022-10-14 13:54:59.182829'), (116873999, NULL, DEFAULT, '2022-10-14 13:54:59.182829', '2022-10-14 13:54:59.182829');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-14 13:54:59.187568', '2022-10-14 13:54:59.187568'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-14 13:54:59.187568', '2022-10-14 13:54:59.187568');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-14 13:54:59.190537', '2022-10-14 13:54:59.190537'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-14 13:54:59.190537', '2022-10-14 13:54:59.190537')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "deletemes" ENABLE TRIGGER ALL;ALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (28.5ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------------
+QuestionTest: test_answer_knows_its_questiion
+---------------------------------------------
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+QuestionTest: test_simple_invocation_of_word_utils
+--------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.4ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "What is the meaning of life, the universe, and everything?"], ["body", nil], ["created_at", "2022-10-14 13:54:59.257812"], ["updated_at", "2022-10-14 13:54:59.257812"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionTest: test_association_with_answer
+------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-14 13:54:59.259978"], ["updated_at", "2022-10-14 13:54:59.259978"]]
+  [1m[36mAnswer Create (0.3ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "Hello Hello"], ["question_id", 848806248], ["created_at", "2022-10-14 13:54:59.260529"], ["updated_at", "2022-10-14 13:54:59.260529"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806248]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------------
+CommentTest: test_simple_create_a_single_standalone_comment
+-----------------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "This is a test question"], ["body", nil], ["created_at", "2022-10-14 13:54:59.262426"], ["updated_at", "2022-10-14 13:54:59.262426"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.2ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "This is a test answer"], ["question_id", 848806249], ["created_at", "2022-10-14 13:54:59.263084"], ["updated_at", "2022-10-14 13:54:59.263084"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mComment Create (0.5ms)[0m  [1m[32mINSERT INTO "comments" ("body", "answer_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "This is a test comment"], ["answer_id", 785061900], ["created_at", "2022-10-14 13:54:59.266246"], ["updated_at", "2022-10-14 13:54:59.266246"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------------------------
+AnswerTest: test_simple_create_a_single_standalone_answer
+---------------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "This is a test question"], ["body", nil], ["created_at", "2022-10-14 13:54:59.267661"], ["updated_at", "2022-10-14 13:54:59.267661"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.2ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "This is a test answer"], ["question_id", 848806250], ["created_at", "2022-10-14 13:54:59.268328"], ["updated_at", "2022-10-14 13:54:59.268328"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "deletemes" DISABLE TRIGGER ALL;ALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.2ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-14 13:55:26.522900', '2022-10-14 13:55:26.522900'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-14 13:55:26.522900', '2022-10-14 13:55:26.522900'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-14 13:55:26.522900', '2022-10-14 13:55:26.522900'), (116873999, NULL, DEFAULT, '2022-10-14 13:55:26.522900', '2022-10-14 13:55:26.522900');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-14 13:55:26.528262', '2022-10-14 13:55:26.528262'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-14 13:55:26.528262', '2022-10-14 13:55:26.528262');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-14 13:55:26.532658', '2022-10-14 13:55:26.532658'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-14 13:55:26.532658', '2022-10-14 13:55:26.532658')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.2ms)[0m  [1m[35mALTER TABLE "deletemes" ENABLE TRIGGER ALL;ALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (10.0ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------
+QuestionRaterTest: test_biggest_test_word
+-----------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------
+QuestionRaterTest: test_biggerr_test
+------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------
+QuestionRaterTest: test_simple_word
+-----------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------
+ValidQuestionTest: test_simple_word
+-----------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-------------------------------
+ValidQuestionTest: test_no_word
+-------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "deletemes" DISABLE TRIGGER ALL;ALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.3ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-14 14:11:53.688330', '2022-10-14 14:11:53.688330'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-14 14:11:53.688330', '2022-10-14 14:11:53.688330'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-14 14:11:53.688330', '2022-10-14 14:11:53.688330'), (116873999, NULL, DEFAULT, '2022-10-14 14:11:53.688330', '2022-10-14 14:11:53.688330');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-14 14:11:53.693364', '2022-10-14 14:11:53.693364'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-14 14:11:53.693364', '2022-10-14 14:11:53.693364');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-14 14:11:53.697528', '2022-10-14 14:11:53.697528'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-14 14:11:53.697528', '2022-10-14 14:11:53.697528')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "deletemes" ENABLE TRIGGER ALL;ALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (8.7ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------
+QuestionsControllerTest: test_should_get_new
+--------------------------------------------
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+Started GET "/questions/new" for 127.0.0.1 at 2022-10-14 10:11:53 -0400
+Processing by QuestionsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/new.html.erb within layouts/application
+  Rendered questions/_form.html.erb (Duration: 3.0ms | Allocations: 2973)
+  Rendered questions/new.html.erb within layouts/application (Duration: 3.6ms | Allocations: 3557)
+  Rendered layout layouts/application.html.erb (Duration: 4.7ms | Allocations: 5982)
+Completed 200 OK in 8ms (Views: 5.8ms | ActiveRecord: 0.0ms | Allocations: 9461)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------
+QuestionsControllerTest: test_should_get_index
+----------------------------------------------
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:11:53 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (2.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 5.1ms | Allocations: 2284)
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.7ms | Allocations: 350)
+  [1m[36mAnswer Count (1.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 1.9ms | Allocations: 341)
+  [1m[36mAnswer Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.7ms | Allocations: 337)
+  Rendered questions/index.html.erb within layouts/application (Duration: 10.3ms | Allocations: 4202)
+  Rendered layout layouts/application.html.erb (Duration: 10.5ms | Allocations: 4707)
+Completed 200 OK in 11ms (Views: 5.4ms | ActiveRecord: 5.2ms | Allocations: 5145)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------------
+QuestionsControllerTest: test_should_get_edit
+---------------------------------------------
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+Started GET "/questions/525858932/edit" for 127.0.0.1 at 2022-10-14 10:11:53 -0400
+Processing by QuestionsController#edit as HTML
+  Parameters: {"id"=>"525858932"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/edit.html.erb within layouts/application
+  Rendered questions/_form.html.erb (Duration: 0.6ms | Allocations: 926)
+  Rendered questions/edit.html.erb within layouts/application (Duration: 1.0ms | Allocations: 1209)
+  Rendered layout layouts/application.html.erb (Duration: 1.2ms | Allocations: 1676)
+Completed 200 OK in 2ms (Views: 1.7ms | ActiveRecord: 0.1ms | Allocations: 2303)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------
+QuestionsControllerTest: test_should_destroy_question
+-----------------------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+  [1m[36mQuestion Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "questions"[0m
+Started DELETE "/questions/525858932" for 127.0.0.1 at 2022-10-14 10:11:53 -0400
+Processing by QuestionsController#destroy as HTML
+  Parameters: {"id"=>"525858932"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mAnswer Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "answers" WHERE "answers"."question_id" = $1 LIMIT $2[0m  [["question_id", 525858932], ["LIMIT", 1]]
+Redirected to http://www.example.com/questions
+Completed 302 Found in 2ms (ActiveRecord: 0.5ms | Allocations: 1071)
+  [1m[36mCACHE Question Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "questions"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+QuestionsControllerTest: test_should_show_question
+--------------------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+Started GET "/questions/525858932" for 127.0.0.1 at 2022-10-14 10:11:53 -0400
+Processing by QuestionsController#show as HTML
+  Parameters: {"id"=>"525858932"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.3ms | Allocations: 167)
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_answer_inline.html.erb (Duration: 2.8ms | Allocations: 3116)
+  Rendered questions/show.html.erb within layouts/application (Duration: 3.8ms | Allocations: 4144)
+  Rendered layout layouts/application.html.erb (Duration: 4.0ms | Allocations: 4639)
+Completed 200 OK in 5ms (Views: 4.0ms | ActiveRecord: 0.2ms | Allocations: 5136)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------------
+QuestionsControllerTest: test_should_create_question
+----------------------------------------------------
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+  [1m[36mQuestion Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "questions"[0m
+Started POST "/questions" for 127.0.0.1 at 2022-10-14 10:11:53 -0400
+Processing by QuestionsController#create as HTML
+  Parameters: {"question"=>{"question"=>"What is the answer to life the universe and everything?"}}
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.9ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "What is the answer to life the universe and everything?"], ["body", nil], ["created_at", "2022-10-14 14:11:53.852964"], ["updated_at", "2022-10-14 14:11:53.852964"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/questions/848806247
+Completed 302 Found in 2ms (ActiveRecord: 1.2ms | Allocations: 1452)
+  [1m[36mQuestion Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "questions"[0m
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" ORDER BY "questions"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------------
+QuestionsControllerTest: test_should_update_question
+----------------------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.0ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+Started PATCH "/questions/525858932" for 127.0.0.1 at 2022-10-14 10:11:53 -0400
+Processing by QuestionsController#update as HTML
+  Parameters: {"question"=>{"question"=>"What is the answer to life the universe and everything?"}, "id"=>"525858932"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+Redirected to http://www.example.com/questions/525858932
+Completed 302 Found in 1ms (ActiveRecord: 0.1ms | Allocations: 629)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "deletemes" DISABLE TRIGGER ALL;ALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.5ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-14 14:17:37.906250', '2022-10-14 14:17:37.906250'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-14 14:17:37.906250', '2022-10-14 14:17:37.906250'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-14 14:17:37.906250', '2022-10-14 14:17:37.906250'), (116873999, NULL, DEFAULT, '2022-10-14 14:17:37.906250', '2022-10-14 14:17:37.906250');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-14 14:17:37.910983', '2022-10-14 14:17:37.910983'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-14 14:17:37.910983', '2022-10-14 14:17:37.910983');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-14 14:17:37.915716', '2022-10-14 14:17:37.915716'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-14 14:17:37.915716', '2022-10-14 14:17:37.915716')[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "deletemes" ENABLE TRIGGER ALL;ALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (9.4ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------------------------
+AnswerTest: test_simple_create_a_single_standalone_answer
+---------------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.3ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "This is a test question"], ["body", nil], ["created_at", "2022-10-14 14:17:37.944032"], ["updated_at", "2022-10-14 14:17:37.944032"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.3ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "This is a test answer"], ["question_id", 848806247], ["created_at", "2022-10-14 14:17:37.949297"], ["updated_at", "2022-10-14 14:17:37.949297"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------------
+CommentTest: test_simple_create_a_single_standalone_comment
+-----------------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.1ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "This is a test question"], ["body", nil], ["created_at", "2022-10-14 14:17:37.950764"], ["updated_at", "2022-10-14 14:17:37.950764"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.1ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "This is a test answer"], ["question_id", 848806248], ["created_at", "2022-10-14 14:17:37.951341"], ["updated_at", "2022-10-14 14:17:37.951341"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mComment Create (0.3ms)[0m  [1m[32mINSERT INTO "comments" ("body", "answer_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "This is a test comment"], ["answer_id", 785061900], ["created_at", "2022-10-14 14:17:37.953452"], ["updated_at", "2022-10-14 14:17:37.953452"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-------------------------------
+ValidQuestionTest: test_no_word
+-------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------
+ValidQuestionTest: test_simple_word
+-----------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+QuestionTest: test_simple_invocation_of_word_utils
+--------------------------------------------------
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "What is the meaning of life, the universe, and everything?"], ["body", nil], ["created_at", "2022-10-14 14:17:37.955676"], ["updated_at", "2022-10-14 14:17:37.955676"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------------
+QuestionTest: test_answer_knows_its_questiion
+---------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionTest: test_association_with_answer
+------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.1ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Hello"], ["body", "Hello Hello"], ["created_at", "2022-10-14 14:17:37.958095"], ["updated_at", "2022-10-14 14:17:37.958095"]]
+  [1m[36mAnswer Create (0.2ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "Hello Hello"], ["question_id", 848806250], ["created_at", "2022-10-14 14:17:37.958488"], ["updated_at", "2022-10-14 14:17:37.958488"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806250]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------
+QuestionRaterTest: test_simple_word
+-----------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------
+QuestionRaterTest: test_biggerr_test
+------------------------------------
+  [1m[36mTRANSACTION (3.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------
+QuestionRaterTest: test_biggest_test_word
+-----------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------------
+AnswersControllerTest: test_should_create_answer
+------------------------------------------------
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers"[0m
+Started POST "/questions/525858932/answers" for 127.0.0.1 at 2022-10-14 10:17:37 -0400
+Processing by AnswersController#create as HTML
+  Parameters: {"answer"=>{"body"=>"I have no idea!", "question_id"=>"525858932"}, "question_id"=>"525858932"}
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.3ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "I have no idea!"], ["question_id", 525858932], ["created_at", "2022-10-14 14:17:38.020805"], ["updated_at", "2022-10-14 14:17:38.020805"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/questions/525858932
+Completed 302 Found in 4ms (ActiveRecord: 0.6ms | Allocations: 3077)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------
+AnswersControllerTest: test_should_get_edit
+-------------------------------------------
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+Started GET "/questions/525858932/answers/785061898/edit" for 127.0.0.1 at 2022-10-14 10:17:38 -0400
+Processing by AnswersController#edit as HTML
+  Parameters: {"question_id"=>"525858932", "id"=>"785061898"}
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mCACHE Question Load (0.0ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering answers/edit.html.erb within layouts/application
+  Rendered answers/_form.html.erb (Duration: 3.5ms | Allocations: 3281)
+  Rendered answers/edit.html.erb within layouts/application (Duration: 4.2ms | Allocations: 3954)
+  Rendered layout layouts/application.html.erb (Duration: 5.4ms | Allocations: 6337)
+Completed 200 OK in 8ms (Views: 6.5ms | ActiveRecord: 0.2ms | Allocations: 9035)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------------
+AnswersControllerTest: test_should_update_answer
+------------------------------------------------
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+Started PATCH "/questions/525858932/answers/785061898" for 127.0.0.1 at 2022-10-14 10:17:38 -0400
+Processing by AnswersController#update as HTML
+  Parameters: {"answer"=>{"body"=>"I have no idea!", "question_id"=>"525858932"}, "question_id"=>"525858932", "id"=>"785061898"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.2ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "I have no idea!"], ["question_id", 525858932], ["created_at", "2022-10-14 14:17:38.038900"], ["updated_at", "2022-10-14 14:17:38.038900"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/questions/525858932
+Completed 302 Found in 2ms (ActiveRecord: 0.6ms | Allocations: 1116)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------
+AnswersControllerTest: test_should_show_answer
+----------------------------------------------
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+Started GET "/questions/525858932/answers.785061898" for 127.0.0.1 at 2022-10-14 10:17:38 -0400
+Processing by AnswersController#index as */*
+  Parameters: {"question_id"=>"525858932"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering answers/index.html.erb within layouts/application
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered answers/_answer.html.erb (Duration: 0.3ms | Allocations: 217)
+  Rendered answers/index.html.erb within layouts/application (Duration: 1.7ms | Allocations: 1383)
+  Rendered layout layouts/application.html.erb (Duration: 2.1ms | Allocations: 1878)
+Completed 200 OK in 3ms (Views: 2.1ms | ActiveRecord: 0.1ms | Allocations: 2506)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------
+AnswersControllerTest: test_should_get_index
+--------------------------------------------
+  [1m[36mAnswer Load (0.4ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+Started GET "/questions/525858932/answers.785061898" for 127.0.0.1 at 2022-10-14 10:17:38 -0400
+Processing by AnswersController#index as */*
+  Parameters: {"question_id"=>"525858932"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering answers/index.html.erb within layouts/application
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered answers/_answer.html.erb (Duration: 0.0ms | Allocations: 16)
+  Rendered answers/index.html.erb within layouts/application (Duration: 0.5ms | Allocations: 436)
+  Rendered layout layouts/application.html.erb (Duration: 0.7ms | Allocations: 903)
+Completed 200 OK in 1ms (Views: 0.7ms | ActiveRecord: 0.2ms | Allocations: 1337)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+AnswersControllerTest: test_should_get_new
+------------------------------------------
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+Started GET "/questions/525858932/answers/new" for 127.0.0.1 at 2022-10-14 10:17:38 -0400
+Processing by AnswersController#new as HTML
+  Parameters: {"question_id"=>"525858932"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering answers/new.html.erb within layouts/application
+  Rendered answers/_form.html.erb (Duration: 0.6ms | Allocations: 844)
+  Rendered answers/new.html.erb within layouts/application (Duration: 0.9ms | Allocations: 994)
+  Rendered layout layouts/application.html.erb (Duration: 1.1ms | Allocations: 1460)
+Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.1ms | Allocations: 2041)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------------
+AnswersControllerTest: test_should_destroy_answer
+-------------------------------------------------
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "questions"[0m
+Started DELETE "/questions/525858932/answers/785061898" for 127.0.0.1 at 2022-10-14 10:17:38 -0400
+Processing by AnswersController#destroy as HTML
+  Parameters: {"question_id"=>"525858932", "id"=>"785061898"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mComment Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "comments" WHERE "comments"."answer_id" = $1 LIMIT $2[0m  [["answer_id", 785061898], ["LIMIT", 1]]
+Redirected to http://www.example.com/questions/525858932
+Completed 302 Found in 1ms (ActiveRecord: 0.2ms | Allocations: 867)
+  [1m[36mCACHE Question Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "questions"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------------
+QuestionsControllerTest: test_should_create_question
+----------------------------------------------------
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+  [1m[36mQuestion Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "questions"[0m
+Started POST "/questions" for 127.0.0.1 at 2022-10-14 10:17:38 -0400
+Processing by QuestionsController#create as HTML
+  Parameters: {"question"=>{"question"=>"What is the answer to life the universe and everything?"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.2ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "What is the answer to life the universe and everything?"], ["body", nil], ["created_at", "2022-10-14 14:17:38.056959"], ["updated_at", "2022-10-14 14:17:38.056959"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/questions/848806251
+Completed 302 Found in 1ms (ActiveRecord: 0.3ms | Allocations: 1007)
+  [1m[36mQuestion Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "questions"[0m
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" ORDER BY "questions"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------------
+QuestionsControllerTest: test_should_get_edit
+---------------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+Started GET "/questions/525858932/edit" for 127.0.0.1 at 2022-10-14 10:17:38 -0400
+Processing by QuestionsController#edit as HTML
+  Parameters: {"id"=>"525858932"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/edit.html.erb within layouts/application
+  Rendered questions/_form.html.erb (Duration: 0.9ms | Allocations: 1381)
+  Rendered questions/edit.html.erb within layouts/application (Duration: 1.4ms | Allocations: 1768)
+  Rendered layout layouts/application.html.erb (Duration: 1.5ms | Allocations: 2331)
+Completed 200 OK in 2ms (Views: 2.0ms | ActiveRecord: 0.1ms | Allocations: 3136)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------------
+QuestionsControllerTest: test_should_update_question
+----------------------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+Started PATCH "/questions/525858932" for 127.0.0.1 at 2022-10-14 10:17:38 -0400
+Processing by QuestionsController#update as HTML
+  Parameters: {"question"=>{"question"=>"What is the answer to life the universe and everything?"}, "id"=>"525858932"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+Redirected to http://www.example.com/questions/525858932
+Completed 302 Found in 1ms (ActiveRecord: 0.1ms | Allocations: 711)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+QuestionsControllerTest: test_should_show_question
+--------------------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+Started GET "/questions/525858932" for 127.0.0.1 at 2022-10-14 10:17:38 -0400
+Processing by QuestionsController#show as HTML
+  Parameters: {"id"=>"525858932"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.3ms | Allocations: 167)
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_answer_inline.html.erb (Duration: 0.9ms | Allocations: 646)
+  Rendered questions/show.html.erb within layouts/application (Duration: 2.1ms | Allocations: 1615)
+  Rendered layout layouts/application.html.erb (Duration: 2.3ms | Allocations: 2081)
+Completed 200 OK in 3ms (Views: 2.3ms | ActiveRecord: 0.2ms | Allocations: 2511)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------
+QuestionsControllerTest: test_should_get_index
+----------------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:17:38 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 0.8ms | Allocations: 545)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.3ms | Allocations: 338)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.3ms | Allocations: 339)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.3ms | Allocations: 337)
+  Rendered questions/index.html.erb within layouts/application (Duration: 2.5ms | Allocations: 2222)
+  Rendered layout layouts/application.html.erb (Duration: 2.7ms | Allocations: 2696)
+Completed 200 OK in 3ms (Views: 2.1ms | ActiveRecord: 0.7ms | Allocations: 3032)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------
+QuestionsControllerTest: test_should_get_new
+--------------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+Started GET "/questions/new" for 127.0.0.1 at 2022-10-14 10:17:38 -0400
+Processing by QuestionsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/new.html.erb within layouts/application
+  Rendered questions/_form.html.erb (Duration: 0.5ms | Allocations: 768)
+  Rendered questions/new.html.erb within layouts/application (Duration: 0.9ms | Allocations: 966)
+  Rendered layout layouts/application.html.erb (Duration: 1.2ms | Allocations: 1440)
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.0ms | Allocations: 1733)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------
+QuestionsControllerTest: test_should_destroy_question
+-----------------------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 116873999], ["LIMIT", 1]]
+  [1m[36mQuestion Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "questions"[0m
+Started DELETE "/questions/525858932" for 127.0.0.1 at 2022-10-14 10:17:38 -0400
+Processing by QuestionsController#destroy as HTML
+  Parameters: {"id"=>"525858932"}
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 525858932], ["LIMIT", 1]]
+  [1m[36mAnswer Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "answers" WHERE "answers"."question_id" = $1 LIMIT $2[0m  [["question_id", 525858932], ["LIMIT", 1]]
+Redirected to http://www.example.com/questions
+Completed 302 Found in 1ms (ActiveRecord: 0.2ms | Allocations: 680)
+  [1m[36mCACHE Question Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "questions"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.1ms)[0m  [1m[35mALTER TABLE "deletemes" DISABLE TRIGGER ALL;ALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.5ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-14 14:18:00.487420', '2022-10-14 14:18:00.487420'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-14 14:18:00.487420', '2022-10-14 14:18:00.487420'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-14 14:18:00.487420', '2022-10-14 14:18:00.487420'), (116873999, NULL, DEFAULT, '2022-10-14 14:18:00.487420', '2022-10-14 14:18:00.487420');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-14 14:18:00.491977', '2022-10-14 14:18:00.491977'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-14 14:18:00.491977', '2022-10-14 14:18:00.491977');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-14 14:18:00.494755', '2022-10-14 14:18:00.494755'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-14 14:18:00.494755', '2022-10-14 14:18:00.494755')[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "deletemes" ENABLE TRIGGER ALL;ALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (9.0ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------
+AnswersTest: test_should_create_answer
+--------------------------------------
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------
+AnswersTest: test_should_update_Answer
+--------------------------------------
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------
+AnswersTest: test_should_destroy_Answer
+---------------------------------------
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------
+AnswersTest: test_visiting_the_index
+------------------------------------
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionsTest: test_should_create_question
+------------------------------------------
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:02 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 3.3ms | Allocations: 2346)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 351)
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.5ms | Allocations: 341)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 337)
+  Rendered questions/index.html.erb within layouts/application (Duration: 6.8ms | Allocations: 4625)
+  Rendered layout layouts/application.html.erb (Duration: 8.0ms | Allocations: 7056)
+Completed 200 OK in 13ms (Views: 8.0ms | ActiveRecord: 1.5ms | Allocations: 10567)
+Started GET "/questions/new" for 127.0.0.1 at 2022-10-14 10:18:02 -0400
+Processing by QuestionsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/new.html.erb within layouts/application
+  Rendered questions/_form.html.erb (Duration: 4.5ms | Allocations: 4073)
+  Rendered questions/new.html.erb within layouts/application (Duration: 5.2ms | Allocations: 4350)
+  Rendered layout layouts/application.html.erb (Duration: 5.5ms | Allocations: 4856)
+Completed 200 OK in 6ms (Views: 5.7ms | ActiveRecord: 0.0ms | Allocations: 5278)
+Started POST "/questions" for 127.0.0.1 at 2022-10-14 10:18:03 -0400
+Processing by QuestionsController#create as TURBO_STREAM
+  Parameters: {"question"=>{"question"=>"Why is gold golden?", "body"=>""}, "commit"=>"Create Question"}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.4ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Why is gold golden?"], ["body", ""], ["created_at", "2022-10-14 14:18:03.008589"], ["updated_at", "2022-10-14 14:18:03.008589"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://127.0.0.1:65141/questions/848806247
+Completed 302 Found in 2ms (ActiveRecord: 0.5ms | Allocations: 1523)
+Started GET "/questions/848806247" for 127.0.0.1 at 2022-10-14 10:18:03 -0400
+Processing by QuestionsController#show as TURBO_STREAM
+  Parameters: {"id"=>"848806247"}
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 848806247], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.4ms | Allocations: 165)
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806247]]
+  Rendered questions/_answer_inline.html.erb (Duration: 1.1ms | Allocations: 637)
+  Rendered questions/show.html.erb within layouts/application (Duration: 2.8ms | Allocations: 1974)
+  Rendered layout layouts/application.html.erb (Duration: 3.2ms | Allocations: 2781)
+Completed 200 OK in 5ms (Views: 3.3ms | ActiveRecord: 0.4ms | Allocations: 3541)
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:03 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 1.0ms | Allocations: 825)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.6ms | Allocations: 706)
+  [1m[36mAnswer Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.9ms | Allocations: 813)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.5ms | Allocations: 337)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806247]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  Rendered questions/index.html.erb within layouts/application (Duration: 4.5ms | Allocations: 3920)
+  Rendered layout layouts/application.html.erb (Duration: 4.8ms | Allocations: 4394)
+Completed 200 OK in 5ms (Views: 3.2ms | ActiveRecord: 1.8ms | Allocations: 4629)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionsTest: test_should_update_Question
+------------------------------------------
+  [1m[36mQuestion Load (0.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+Started GET "/questions/196444638" for 127.0.0.1 at 2022-10-14 10:18:03 -0400
+Processing by QuestionsController#show as HTML
+  Parameters: {"id"=>"196444638"}
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.0ms | Allocations: 20)
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_answer_inline.html.erb (Duration: 0.6ms | Allocations: 281)
+  Rendered questions/show.html.erb within layouts/application (Duration: 1.1ms | Allocations: 797)
+  Rendered layout layouts/application.html.erb (Duration: 1.4ms | Allocations: 1285)
+Completed 200 OK in 3ms (Views: 1.5ms | ActiveRecord: 0.4ms | Allocations: 1759)
+Started GET "/questions/196444638/edit" for 127.0.0.1 at 2022-10-14 10:18:03 -0400
+Processing by QuestionsController#edit as HTML
+  Parameters: {"id"=>"196444638"}
+  [1m[36mCACHE Question Load (0.0ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/edit.html.erb within layouts/application
+  Rendered questions/_form.html.erb (Duration: 0.7ms | Allocations: 919)
+  Rendered questions/edit.html.erb within layouts/application (Duration: 1.3ms | Allocations: 1191)
+  Rendered layout layouts/application.html.erb (Duration: 1.5ms | Allocations: 1657)
+Completed 200 OK in 3ms (Views: 1.7ms | ActiveRecord: 0.0ms | Allocations: 3180)
+Started PATCH "/questions/196444638" for 127.0.0.1 at 2022-10-14 10:18:03 -0400
+Processing by QuestionsController#update as TURBO_STREAM
+  Parameters: {"question"=>{"question"=>"Why is gold golden?", "body"=>""}, "commit"=>"Update Question", "id"=>"196444638"}
+  [1m[36mCACHE Question Load (0.0ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Update (0.5ms)[0m  [1m[33mUPDATE "questions" SET "body" = $1, "updated_at" = $2 WHERE "questions"."id" = $3[0m  [["body", ""], ["updated_at", "2022-10-14 14:18:03.378650"], ["id", 196444638]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://127.0.0.1:65141/questions/196444638
+Completed 302 Found in 3ms (ActiveRecord: 0.8ms | Allocations: 1103)
+Started GET "/questions/196444638" for 127.0.0.1 at 2022-10-14 10:18:03 -0400
+Processing by QuestionsController#show as TURBO_STREAM
+  Parameters: {"id"=>"196444638"}
+  [1m[36mQuestion Load (0.8ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.0ms | Allocations: 16)
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_answer_inline.html.erb (Duration: 0.5ms | Allocations: 227)
+  Rendered questions/show.html.erb within layouts/application (Duration: 0.9ms | Allocations: 784)
+  Rendered layout layouts/application.html.erb (Duration: 1.3ms | Allocations: 1250)
+Completed 200 OK in 3ms (Views: 1.2ms | ActiveRecord: 0.9ms | Allocations: 1910)
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:03 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (2.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 3.2ms | Allocations: 1651)
+  [1m[36mAnswer Count (6.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 6.9ms | Allocations: 338)
+  [1m[36mAnswer Count (0.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 1.5ms | Allocations: 337)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.6ms | Allocations: 338)
+  Rendered questions/index.html.erb within layouts/application (Duration: 13.2ms | Allocations: 3513)
+  Rendered layout layouts/application.html.erb (Duration: 13.5ms | Allocations: 3987)
+Completed 200 OK in 14ms (Views: 3.5ms | ActiveRecord: 10.2ms | Allocations: 4222)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------
+QuestionsTest: test_should_destroy_Question
+-------------------------------------------
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+Started GET "/questions/196444638" for 127.0.0.1 at 2022-10-14 10:18:03 -0400
+Processing by QuestionsController#show as HTML
+  Parameters: {"id"=>"196444638"}
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.0ms | Allocations: 20)
+  [1m[36mAnswer Load (0.6ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_answer_inline.html.erb (Duration: 1.0ms | Allocations: 281)
+  Rendered questions/show.html.erb within layouts/application (Duration: 1.5ms | Allocations: 797)
+  Rendered layout layouts/application.html.erb (Duration: 2.1ms | Allocations: 1285)
+Completed 200 OK in 3ms (Views: 1.7ms | ActiveRecord: 0.8ms | Allocations: 1759)
+Started DELETE "/questions/196444638" for 127.0.0.1 at 2022-10-14 10:18:03 -0400
+Processing by QuestionsController#destroy as TURBO_STREAM
+  Parameters: {"id"=>"196444638"}
+  [1m[36mCACHE Question Load (0.0ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  [1m[36mAnswer Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "answers" WHERE "answers"."question_id" = $1 LIMIT $2[0m  [["question_id", 196444638], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Destroy (0.4ms)[0m  [1m[31mDELETE FROM "questions" WHERE "questions"."id" = $1[0m  [["id", 196444638]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://127.0.0.1:65141/questions
+Completed 302 Found in 3ms (ActiveRecord: 1.0ms | Allocations: 1008)
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:03 -0400
+Processing by QuestionsController#index as TURBO_STREAM
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 1.0ms | Allocations: 767)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.5ms | Allocations: 338)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.5ms | Allocations: 337)
+  Rendered questions/index.html.erb within layouts/application (Duration: 2.9ms | Allocations: 1919)
+  Rendered layout layouts/application.html.erb (Duration: 3.2ms | Allocations: 2393)
+Completed 200 OK in 4ms (Views: 2.3ms | ActiveRecord: 1.0ms | Allocations: 2631)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------
+QuestionsTest: test_visiting_the_index
+--------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:03 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (1.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 0.8ms | Allocations: 464)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  [1m[36mAnswer Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.9ms | Allocations: 337)
+  Rendered questions/index.html.erb within layouts/application (Duration: 4.1ms | Allocations: 1976)
+  Rendered layout layouts/application.html.erb (Duration: 4.3ms | Allocations: 2477)
+Completed 200 OK in 5ms (Views: 2.2ms | ActiveRecord: 2.3ms | Allocations: 2775)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+----------------------------------
+PostsTest: test_visiting_the_index
+----------------------------------
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:04 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 0.8ms | Allocations: 464)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.3ms | Allocations: 337)
+  Rendered questions/index.html.erb within layouts/application (Duration: 2.9ms | Allocations: 1976)
+  Rendered layout layouts/application.html.erb (Duration: 3.1ms | Allocations: 2477)
+Completed 200 OK in 4ms (Views: 2.4ms | ActiveRecord: 0.9ms | Allocations: 2774)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "deletemes" DISABLE TRIGGER ALL;ALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.5ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-14 14:18:20.097615', '2022-10-14 14:18:20.097615'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-14 14:18:20.097615', '2022-10-14 14:18:20.097615'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-14 14:18:20.097615', '2022-10-14 14:18:20.097615'), (116873999, NULL, DEFAULT, '2022-10-14 14:18:20.097615', '2022-10-14 14:18:20.097615');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-14 14:18:20.102972', '2022-10-14 14:18:20.102972'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-14 14:18:20.102972', '2022-10-14 14:18:20.102972');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-14 14:18:20.106999', '2022-10-14 14:18:20.106999'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-14 14:18:20.106999', '2022-10-14 14:18:20.106999')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "deletemes" ENABLE TRIGGER ALL;ALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (7.0ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------
+QuestionsTest: test_visiting_the_index
+--------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:21 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.5ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (2.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 6.0ms | Allocations: 2410)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 351)
+  [1m[36mAnswer Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.9ms | Allocations: 341)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.6ms | Allocations: 337)
+  Rendered questions/index.html.erb within layouts/application (Duration: 10.7ms | Allocations: 4689)
+  Rendered layout layouts/application.html.erb (Duration: 12.0ms | Allocations: 7121)
+Completed 200 OK in 30ms (Views: 23.1ms | ActiveRecord: 4.2ms | Allocations: 10636)
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------
+QuestionsTest: test_should_destroy_Question
+-------------------------------------------
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+Started GET "/questions/196444638" for 127.0.0.1 at 2022-10-14 10:18:21 -0400
+Processing by QuestionsController#show as HTML
+  Parameters: {"id"=>"196444638"}
+  [1m[36mQuestion Load (0.6ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.2ms | Allocations: 169)
+  [1m[36mAnswer Load (0.3ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_answer_inline.html.erb (Duration: 1.4ms | Allocations: 641)
+  Rendered questions/show.html.erb within layouts/application (Duration: 2.8ms | Allocations: 1717)
+  Rendered layout layouts/application.html.erb (Duration: 3.2ms | Allocations: 2206)
+Completed 200 OK in 5ms (Views: 3.1ms | ActiveRecord: 0.8ms | Allocations: 3026)
+Started DELETE "/questions/196444638" for 127.0.0.1 at 2022-10-14 10:18:21 -0400
+Processing by QuestionsController#destroy as TURBO_STREAM
+  Parameters: {"id"=>"196444638"}
+  [1m[36mCACHE Question Load (0.0ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  [1m[36mAnswer Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "answers" WHERE "answers"."question_id" = $1 LIMIT $2[0m  [["question_id", 196444638], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Destroy (0.3ms)[0m  [1m[31mDELETE FROM "questions" WHERE "questions"."id" = $1[0m  [["id", 196444638]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://127.0.0.1:65162/questions
+Completed 302 Found in 3ms (ActiveRecord: 1.1ms | Allocations: 1584)
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:21 -0400
+Processing by QuestionsController#index as TURBO_STREAM
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 0.7ms | Allocations: 809)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.3ms | Allocations: 337)
+  Rendered questions/index.html.erb within layouts/application (Duration: 2.5ms | Allocations: 2035)
+  Rendered layout layouts/application.html.erb (Duration: 3.0ms | Allocations: 2532)
+Completed 200 OK in 4ms (Views: 2.4ms | ActiveRecord: 0.9ms | Allocations: 2852)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionsTest: test_should_create_question
+------------------------------------------
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:22 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 0.9ms | Allocations: 464)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.5ms | Allocations: 337)
+  Rendered questions/index.html.erb within layouts/application (Duration: 3.1ms | Allocations: 1976)
+  Rendered layout layouts/application.html.erb (Duration: 3.4ms | Allocations: 2477)
+Completed 200 OK in 4ms (Views: 2.8ms | ActiveRecord: 0.8ms | Allocations: 2774)
+Started GET "/questions/new" for 127.0.0.1 at 2022-10-14 10:18:22 -0400
+Processing by QuestionsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/new.html.erb within layouts/application
+  Rendered questions/_form.html.erb (Duration: 5.1ms | Allocations: 3968)
+  Rendered questions/new.html.erb within layouts/application (Duration: 6.6ms | Allocations: 4264)
+  Rendered layout layouts/application.html.erb (Duration: 6.9ms | Allocations: 4768)
+Completed 200 OK in 8ms (Views: 7.0ms | ActiveRecord: 0.0ms | Allocations: 5140)
+Started POST "/questions" for 127.0.0.1 at 2022-10-14 10:18:22 -0400
+Processing by QuestionsController#create as TURBO_STREAM
+  Parameters: {"question"=>{"question"=>"Why is gold golden?", "body"=>""}, "commit"=>"Create Question"}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.5ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Why is gold golden?"], ["body", ""], ["created_at", "2022-10-14 14:18:22.357040"], ["updated_at", "2022-10-14 14:18:22.357040"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://127.0.0.1:65162/questions/848806247
+Completed 302 Found in 2ms (ActiveRecord: 0.8ms | Allocations: 1323)
+Started GET "/questions/848806247" for 127.0.0.1 at 2022-10-14 10:18:22 -0400
+Processing by QuestionsController#show as TURBO_STREAM
+  Parameters: {"id"=>"848806247"}
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 848806247], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.0ms | Allocations: 18)
+  [1m[36mAnswer Load (0.3ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806247]]
+  Rendered questions/_answer_inline.html.erb (Duration: 0.6ms | Allocations: 685)
+  Rendered questions/show.html.erb within layouts/application (Duration: 1.3ms | Allocations: 1270)
+  Rendered layout layouts/application.html.erb (Duration: 1.6ms | Allocations: 1737)
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.5ms | Allocations: 2140)
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:22 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.5ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 0.6ms | Allocations: 636)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 794)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.6ms | Allocations: 338)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 340)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806247]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 800)
+  Rendered questions/index.html.erb within layouts/application (Duration: 3.8ms | Allocations: 3907)
+  Rendered layout layouts/application.html.erb (Duration: 4.1ms | Allocations: 4381)
+Completed 200 OK in 5ms (Views: 3.1ms | ActiveRecord: 1.2ms | Allocations: 4616)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionsTest: test_should_update_Question
+------------------------------------------
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+Started GET "/questions/196444638" for 127.0.0.1 at 2022-10-14 10:18:22 -0400
+Processing by QuestionsController#show as HTML
+  Parameters: {"id"=>"196444638"}
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.0ms | Allocations: 20)
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_answer_inline.html.erb (Duration: 0.7ms | Allocations: 281)
+  Rendered questions/show.html.erb within layouts/application (Duration: 1.4ms | Allocations: 797)
+  Rendered layout layouts/application.html.erb (Duration: 1.7ms | Allocations: 1285)
+Completed 200 OK in 3ms (Views: 1.7ms | ActiveRecord: 0.4ms | Allocations: 1759)
+Started GET "/questions/196444638/edit" for 127.0.0.1 at 2022-10-14 10:18:22 -0400
+Processing by QuestionsController#edit as HTML
+  Parameters: {"id"=>"196444638"}
+  [1m[36mCACHE Question Load (0.0ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/edit.html.erb within layouts/application
+  Rendered questions/_form.html.erb (Duration: 0.7ms | Allocations: 916)
+  Rendered questions/edit.html.erb within layouts/application (Duration: 1.9ms | Allocations: 1188)
+  Rendered layout layouts/application.html.erb (Duration: 2.1ms | Allocations: 1654)
+Completed 200 OK in 3ms (Views: 2.4ms | ActiveRecord: 0.0ms | Allocations: 2040)
+Started PATCH "/questions/196444638" for 127.0.0.1 at 2022-10-14 10:18:22 -0400
+Processing by QuestionsController#update as TURBO_STREAM
+  Parameters: {"question"=>{"question"=>"Why is gold golden?", "body"=>""}, "commit"=>"Update Question", "id"=>"196444638"}
+  [1m[36mCACHE Question Load (0.0ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Update (0.3ms)[0m  [1m[33mUPDATE "questions" SET "body" = $1, "updated_at" = $2 WHERE "questions"."id" = $3[0m  [["body", ""], ["updated_at", "2022-10-14 14:18:22.724841"], ["id", 196444638]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://127.0.0.1:65162/questions/196444638
+Completed 302 Found in 2ms (ActiveRecord: 0.6ms | Allocations: 1599)
+Started GET "/questions/196444638" for 127.0.0.1 at 2022-10-14 10:18:22 -0400
+Processing by QuestionsController#show as TURBO_STREAM
+  Parameters: {"id"=>"196444638"}
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.0ms | Allocations: 16)
+  [1m[36mAnswer Load (1.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_answer_inline.html.erb (Duration: 1.6ms | Allocations: 635)
+  Rendered questions/show.html.erb within layouts/application (Duration: 2.0ms | Allocations: 1184)
+  Rendered layout layouts/application.html.erb (Duration: 2.3ms | Allocations: 1650)
+Completed 200 OK in 3ms (Views: 1.2ms | ActiveRecord: 1.5ms | Allocations: 1992)
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:22 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 0.7ms | Allocations: 828)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 337)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.3ms | Allocations: 338)
+  Rendered questions/index.html.erb within layouts/application (Duration: 2.6ms | Allocations: 2694)
+  Rendered layout layouts/application.html.erb (Duration: 2.8ms | Allocations: 3168)
+Completed 200 OK in 4ms (Views: 2.1ms | ActiveRecord: 0.9ms | Allocations: 3860)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+----------------------------------
+PostsTest: test_visiting_the_index
+----------------------------------
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:22 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 1.0ms | Allocations: 464)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 337)
+  Rendered questions/index.html.erb within layouts/application (Duration: 3.2ms | Allocations: 1976)
+  Rendered layout layouts/application.html.erb (Duration: 3.5ms | Allocations: 2477)
+Completed 200 OK in 4ms (Views: 2.7ms | ActiveRecord: 1.0ms | Allocations: 2774)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------
+AnswersTest: test_visiting_the_index
+------------------------------------
+  [1m[36mAnswer Load (0.4ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------
+AnswersTest: test_should_destroy_Answer
+---------------------------------------
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------
+AnswersTest: test_should_create_answer
+--------------------------------------
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------
+AnswersTest: test_should_update_Answer
+--------------------------------------
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "deletemes" DISABLE TRIGGER ALL;ALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.7ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-14 14:18:48.890625', '2022-10-14 14:18:48.890625'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-14 14:18:48.890625', '2022-10-14 14:18:48.890625'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-14 14:18:48.890625', '2022-10-14 14:18:48.890625'), (116873999, NULL, DEFAULT, '2022-10-14 14:18:48.890625', '2022-10-14 14:18:48.890625');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-14 14:18:48.895071', '2022-10-14 14:18:48.895071'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-14 14:18:48.895071', '2022-10-14 14:18:48.895071');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-14 14:18:48.899388', '2022-10-14 14:18:48.899388'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-14 14:18:48.899388', '2022-10-14 14:18:48.899388')[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "deletemes" ENABLE TRIGGER ALL;ALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (10.7ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionsTest: test_should_create_question
+------------------------------------------
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:50 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (15.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 4.4ms | Allocations: 2410)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.5ms | Allocations: 351)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.3ms | Allocations: 341)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.3ms | Allocations: 337)
+  Rendered questions/index.html.erb within layouts/application (Duration: 23.8ms | Allocations: 4689)
+  Rendered layout layouts/application.html.erb (Duration: 25.2ms | Allocations: 7121)
+Completed 200 OK in 44ms (Views: 25.5ms | ActiveRecord: 16.0ms | Allocations: 10636)
+Started GET "/questions/new" for 127.0.0.1 at 2022-10-14 10:18:50 -0400
+Processing by QuestionsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/new.html.erb within layouts/application
+  Rendered questions/_form.html.erb (Duration: 3.3ms | Allocations: 2840)
+  Rendered questions/new.html.erb within layouts/application (Duration: 3.7ms | Allocations: 3117)
+  Rendered layout layouts/application.html.erb (Duration: 4.0ms | Allocations: 3623)
+Completed 200 OK in 5ms (Views: 4.1ms | ActiveRecord: 0.0ms | Allocations: 4046)
+Started POST "/questions" for 127.0.0.1 at 2022-10-14 10:18:50 -0400
+Processing by QuestionsController#create as TURBO_STREAM
+  Parameters: {"question"=>{"question"=>"Why is gold golden?", "body"=>""}, "commit"=>"Create Question"}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.4ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "Why is gold golden?"], ["body", ""], ["created_at", "2022-10-14 14:18:50.833791"], ["updated_at", "2022-10-14 14:18:50.833791"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://127.0.0.1:65182/questions/848806247
+Completed 302 Found in 2ms (ActiveRecord: 0.6ms | Allocations: 1532)
+Started GET "/questions/848806247" for 127.0.0.1 at 2022-10-14 10:18:50 -0400
+Processing by QuestionsController#show as TURBO_STREAM
+  Parameters: {"id"=>"848806247"}
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 848806247], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.2ms | Allocations: 166)
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806247]]
+  Rendered questions/_answer_inline.html.erb (Duration: 0.9ms | Allocations: 641)
+  Rendered questions/show.html.erb within layouts/application (Duration: 2.6ms | Allocations: 2288)
+  Rendered layout layouts/application.html.erb (Duration: 3.1ms | Allocations: 2775)
+Completed 200 OK in 4ms (Views: 3.0ms | ActiveRecord: 0.4ms | Allocations: 3536)
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:50 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.6ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 0.8ms | Allocations: 360)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.6ms | Allocations: 339)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.6ms | Allocations: 337)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806247]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  Rendered questions/index.html.erb within layouts/application (Duration: 3.9ms | Allocations: 2691)
+  Rendered layout layouts/application.html.erb (Duration: 4.2ms | Allocations: 3165)
+Completed 200 OK in 5ms (Views: 3.0ms | ActiveRecord: 1.4ms | Allocations: 3400)
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------
+QuestionsTest: test_should_destroy_Question
+-------------------------------------------
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+Started GET "/questions/196444638" for 127.0.0.1 at 2022-10-14 10:18:51 -0400
+Processing by QuestionsController#show as HTML
+  Parameters: {"id"=>"196444638"}
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.1ms | Allocations: 20)
+  [1m[36mAnswer Load (0.4ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_answer_inline.html.erb (Duration: 1.0ms | Allocations: 281)
+  Rendered questions/show.html.erb within layouts/application (Duration: 1.5ms | Allocations: 797)
+  Rendered layout layouts/application.html.erb (Duration: 1.8ms | Allocations: 1285)
+Completed 200 OK in 3ms (Views: 1.6ms | ActiveRecord: 0.6ms | Allocations: 1759)
+Started DELETE "/questions/196444638" for 127.0.0.1 at 2022-10-14 10:18:51 -0400
+Processing by QuestionsController#destroy as TURBO_STREAM
+  Parameters: {"id"=>"196444638"}
+  [1m[36mCACHE Question Load (0.0ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  [1m[36mAnswer Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "answers" WHERE "answers"."question_id" = $1 LIMIT $2[0m  [["question_id", 196444638], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Destroy (0.4ms)[0m  [1m[31mDELETE FROM "questions" WHERE "questions"."id" = $1[0m  [["id", 196444638]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://127.0.0.1:65182/questions
+Completed 302 Found in 4ms (ActiveRecord: 1.7ms | Allocations: 1666)
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:51 -0400
+Processing by QuestionsController#index as TURBO_STREAM
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.1ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 0.6ms | Allocations: 359)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.5ms | Allocations: 746)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 337)
+  Rendered questions/index.html.erb within layouts/application (Duration: 2.1ms | Allocations: 1904)
+  Rendered layout layouts/application.html.erb (Duration: 2.5ms | Allocations: 2378)
+Completed 200 OK in 3ms (Views: 2.1ms | ActiveRecord: 0.7ms | Allocations: 2616)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------
+QuestionsTest: test_visiting_the_index
+--------------------------------------
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:51 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 0.9ms | Allocations: 464)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.5ms | Allocations: 338)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.6ms | Allocations: 337)
+  Rendered questions/index.html.erb within layouts/application (Duration: 3.5ms | Allocations: 1976)
+  Rendered layout layouts/application.html.erb (Duration: 3.8ms | Allocations: 2477)
+Completed 200 OK in 5ms (Views: 3.1ms | ActiveRecord: 1.0ms | Allocations: 2774)
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------
+QuestionsTest: test_should_update_Question
+------------------------------------------
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+Started GET "/questions/196444638" for 127.0.0.1 at 2022-10-14 10:18:51 -0400
+Processing by QuestionsController#show as HTML
+  Parameters: {"id"=>"196444638"}
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.0ms | Allocations: 20)
+  [1m[36mAnswer Load (0.1ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_answer_inline.html.erb (Duration: 0.7ms | Allocations: 282)
+  Rendered questions/show.html.erb within layouts/application (Duration: 1.1ms | Allocations: 798)
+  Rendered layout layouts/application.html.erb (Duration: 1.4ms | Allocations: 1287)
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.3ms | Allocations: 1782)
+Started GET "/questions/196444638/edit" for 127.0.0.1 at 2022-10-14 10:18:51 -0400
+Processing by QuestionsController#edit as HTML
+  Parameters: {"id"=>"196444638"}
+  [1m[36mCACHE Question Load (0.0ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/edit.html.erb within layouts/application
+  Rendered questions/_form.html.erb (Duration: 0.6ms | Allocations: 916)
+  Rendered questions/edit.html.erb within layouts/application (Duration: 2.0ms | Allocations: 1191)
+  Rendered layout layouts/application.html.erb (Duration: 2.2ms | Allocations: 1657)
+Completed 200 OK in 3ms (Views: 2.4ms | ActiveRecord: 0.0ms | Allocations: 2044)
+Started PATCH "/questions/196444638" for 127.0.0.1 at 2022-10-14 10:18:51 -0400
+Processing by QuestionsController#update as TURBO_STREAM
+  Parameters: {"question"=>{"question"=>"Why is gold golden?", "body"=>""}, "commit"=>"Update Question", "id"=>"196444638"}
+  [1m[36mCACHE Question Load (0.0ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Update (0.4ms)[0m  [1m[33mUPDATE "questions" SET "body" = $1, "updated_at" = $2 WHERE "questions"."id" = $3[0m  [["body", ""], ["updated_at", "2022-10-14 14:18:51.774040"], ["id", 196444638]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://127.0.0.1:65182/questions/196444638
+Completed 302 Found in 3ms (ActiveRecord: 0.7ms | Allocations: 1604)
+Started GET "/questions/196444638" for 127.0.0.1 at 2022-10-14 10:18:51 -0400
+Processing by QuestionsController#show as TURBO_STREAM
+  Parameters: {"id"=>"196444638"}
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 196444638], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.0ms | Allocations: 16)
+  [1m[36mAnswer Load (0.3ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_answer_inline.html.erb (Duration: 0.5ms | Allocations: 227)
+  Rendered questions/show.html.erb within layouts/application (Duration: 0.9ms | Allocations: 782)
+  Rendered layout layouts/application.html.erb (Duration: 1.2ms | Allocations: 1248)
+Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.4ms | Allocations: 2123)
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:51 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 0.7ms | Allocations: 828)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 337)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  Rendered questions/index.html.erb within layouts/application (Duration: 2.7ms | Allocations: 2694)
+  Rendered layout layouts/application.html.erb (Duration: 3.0ms | Allocations: 3168)
+Completed 200 OK in 4ms (Views: 2.3ms | ActiveRecord: 0.9ms | Allocations: 3860)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------
+AnswersTest: test_should_create_answer
+--------------------------------------
+  [1m[36mAnswer Load (0.3ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------
+AnswersTest: test_should_destroy_Answer
+---------------------------------------
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------
+AnswersTest: test_visiting_the_index
+------------------------------------
+  [1m[36mAnswer Load (0.3ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------
+AnswersTest: test_should_update_Answer
+--------------------------------------
+  [1m[36mAnswer Load (0.3ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."id" = $1 LIMIT $2[0m  [["id", 785061898], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+----------------------------------
+PostsTest: test_visiting_the_index
+----------------------------------
+Started GET "/questions" for 127.0.0.1 at 2022-10-14 10:18:52 -0400
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 525858932]]
+  Rendered questions/_question_row.html.erb (Duration: 0.6ms | Allocations: 466)
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 848806246]]
+  Rendered questions/_question_row.html.erb (Duration: 0.5ms | Allocations: 339)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 196444638]]
+  Rendered questions/_question_row.html.erb (Duration: 0.4ms | Allocations: 338)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 116873999]]
+  Rendered questions/_question_row.html.erb (Duration: 0.3ms | Allocations: 337)
+  Rendered questions/index.html.erb within layouts/application (Duration: 2.7ms | Allocations: 1987)
+  Rendered layout layouts/application.html.erb (Duration: 2.9ms | Allocations: 2489)
+Completed 200 OK in 3ms (Views: 2.0ms | ActiveRecord: 1.0ms | Allocations: 2799)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (5.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "deletemes" DISABLE TRIGGER ALL;ALTER TABLE "questions" DISABLE TRIGGER ALL;ALTER TABLE "answers" DISABLE TRIGGER ALL;ALTER TABLE "comments" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.9ms)[0m  [1m[31mDELETE FROM "questions";
+DELETE FROM "answers";
+DELETE FROM "comments";
+INSERT INTO "questions" ("id", "question", "body", "created_at", "updated_at") VALUES (525858932, 'What is the answer to life the universe and everything?', DEFAULT, '2022-10-14 15:06:51.933513', '2022-10-14 15:06:51.933513'), (848806246, 'Where is the treasure buried?', DEFAULT, '2022-10-14 15:06:51.933513', '2022-10-14 15:06:51.933513'), (196444638, 'Why is gold golden?', DEFAULT, '2022-10-14 15:06:51.933513', '2022-10-14 15:06:51.933513'), (116873999, NULL, DEFAULT, '2022-10-14 15:06:51.933513', '2022-10-14 15:06:51.933513');
+INSERT INTO "answers" ("id", "body", "question_id", "created_at", "updated_at") VALUES (785061898, 'I have no idea!', 525858932, '2022-10-14 15:06:51.938728', '2022-10-14 15:06:51.938728'), (53262218, 'That''s a great question, the answer is 12', 848806246, '2022-10-14 15:06:51.938728', '2022-10-14 15:06:51.938728');
+INSERT INTO "comments" ("id", "body", "answer_id", "created_at", "updated_at") VALUES (368257333, 'That is not a correct answer!', 785061898, '2022-10-14 15:06:51.942550', '2022-10-14 15:06:51.942550'), (607766966, 'Perfect, that works for me too!', 785061898, '2022-10-14 15:06:51.942550', '2022-10-14 15:06:51.942550')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "deletemes" ENABLE TRIGGER ALL;ALTER TABLE "questions" ENABLE TRIGGER ALL;ALTER TABLE "answers" ENABLE TRIGGER ALL;ALTER TABLE "comments" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (10.1ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+---------------------------------------------------------
+AnswerTest: test_simple_create_a_single_standalone_answer
+---------------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mQuestion Create (0.3ms)[0m  [1m[32mINSERT INTO "questions" ("question", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["question", "This is a test question"], ["body", nil], ["created_at", "2022-10-14 15:06:51.971613"], ["updated_at", "2022-10-14 15:06:51.971613"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAnswer Create (0.4ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "This is a test answer"], ["question_id", 848806247], ["created_at", "2022-10-14 15:06:51.977411"], ["updated_at", "2022-10-14 15:06:51.977411"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------------
+AnswerTest: test_all_amswers_belong_to_some_question
+----------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
