@@ -17,7 +17,6 @@ jobs:
           ruby-version: 3.1.1
       - name: Build and run tests
         env: 
-          DATABASE_URL: postgres://pitosalas:@localhost:5432/questionanswer_test
           RAILS_ENV: test
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: |
