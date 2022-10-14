@@ -7,12 +7,10 @@ jobs:
       postgres:
         image: postgres:11-alpine
         ports:
-          - "5432:5432"
-        env:
-          POSTGRES_DB: questionanswer_test
-          POSTGRES_USER: pitosalas
+          - 5432:5432
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout repo
+      - uses: actions/checkout@v2
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
