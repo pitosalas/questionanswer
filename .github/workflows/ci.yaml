@@ -11,7 +11,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
     steps:
       - name: Checkout repo
-        uses: actions/checkout
+        uses: actions/checkout@v2
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
