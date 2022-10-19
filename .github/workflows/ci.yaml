@@ -5,27 +5,33 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:11-alpine
-        ports:
-          - 5432:5432
+        image: postgres:12
+        ports: ['5432:5432']
+        env: POSTGRES_PASSWORD: postgres
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.1.1
-      - name: Build and run tests
-        env: 
-          DATABASE_URL: postgres://postgres:@localhost:5432/questionanswer_test
-          RAILS_ENV: test
-          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      - name: Install dependencies
         run: |
           sudo apt-get -yqq install libpq-dev
           gem install bundler
+
+      - name: Install gems
+        run: |
           bundle install --jobs 4 --retry 3
-          bundle exec rails db:create          
+      - name: Setup database
+        env:
+          PG_DATABASE: postgres
+          PG_HOST: localhost
+          PG_USER: postgres
+          PG_PASSWORD: password
+          RAILS_ENV: test
+          DISABLE_SPRING: 1
+        run: |
           bundle exec rails db:prepare
           bundle exec rails test
-
-
+          
