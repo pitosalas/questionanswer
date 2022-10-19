@@ -14,7 +14,7 @@ jobs:
           bundler-cache: true
       - name: Run linters
         run: |
-          bin/rubocop --parallel
+          bin/bundler exec rubocop --parallel
       - name: Prettify code
         uses: creyD/prettier_action@v4.2
         with:
@@ -23,10 +23,7 @@ jobs:
       - name: Run security checks
         run: |
           bin/bundler-audit --update
-          bin/bundler execv brakeman -q -w2
-
-
-
+          bin/bundler exec brakeman -q -w2
   test:
     runs-on: ubuntu-latest
     services:
