@@ -14,6 +14,7 @@ jobs:
           bundler-cache: true
       - name: Run linters
         run: |
+          bundle install |
           bundler exec rubocop --parallel
       - name: Prettify code
         uses: creyD/prettier_action@v4.2
