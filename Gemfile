@@ -71,5 +71,7 @@ group :test do
   gem "webdrivers"
   gem 'minitest'
   gem "factory_bot_rails"
-  end
+  gem "prettier"
+  gem "brakeman"
+end
 gem 'bootstrap', '~> 5.1.3'
