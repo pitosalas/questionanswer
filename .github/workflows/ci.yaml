@@ -12,10 +12,9 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - name: Run linters
+      - name: Install bundler
         run: |
           bundle install
-          bundler exec rubocop --parallel
       - name: Prettify code
         uses: creyD/prettier_action@v4.2
         with:
