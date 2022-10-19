@@ -6,7 +6,7 @@ jobs:
     services:
       postgres:
         image: postgres:12
-        ports: '5432:5432'
+        ports: ['5432:5432']
       env: 
         POSTGRES_DB: questionanswer_test
         POSTGRES_PASSWORD: postgres
