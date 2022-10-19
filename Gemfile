@@ -73,5 +73,6 @@ group :test do
   gem "factory_bot_rails"
   gem "prettier"
   gem "brakeman"
+  gem "rubocop"
 end
 gem 'bootstrap', '~> 5.1.3'
