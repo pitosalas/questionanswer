@@ -6,12 +6,15 @@ jobs:
     services:
       postgres:
         image: postgres:12
-        ports: ['5432:5432']
+        ports: "5432:5432"
         env: 
+          POSTGRES_DB: questionanswer_test
           POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -26,10 +29,7 @@ jobs:
           bundle install --jobs 4 --retry 3
       - name: Setup database
         env:
-          PG_DATABASE: postgres
-          PG_HOST: localhost
-          PG_USER: postgres
-          PG_PASSWORD: password
+          DATABASE_URL: "postgres://postgres:postgres@localhost:5432/questionanswer_test"
           RAILS_ENV: test
           DISABLE_SPRING: 1
         run: |
