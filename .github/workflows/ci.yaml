@@ -1,29 +1,6 @@
 name: CI
 on: [push]
 jobs:
-  linters:
-    name: Linters
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Ruby and install gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - name: Install bundler
-        run: |
-          bundle install
-      - name: Prettify code
-        uses: creyD/prettier_action@v4.2
-        with:
-          # This part is also where you can pass other options, for example:
-          prettier_options: --write **/*.{js,md}
-      - name: Run security checks
-        run: |
-          bin/bundler-audit --update
-          bin/bundler exec brakeman -q -w2
   test:
     runs-on: ubuntu-latest
     services:
