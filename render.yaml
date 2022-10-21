@@ -1,18 +1,18 @@
 databases:
-  - name: mysite
-    databaseName: mysiterails
-    user: mysite
+  - name: qa
+    databaseName: qa
+    user: qa
 
 services:
   - type: web
-    name: mysite
+    name: qa
     env: ruby
     buildCommand: "./bin/render-build.sh"
     startCommand: "bundle exec puma -C config/puma.rb"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: mysite
+          name: qa
           property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
