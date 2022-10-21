@@ -9,6 +9,6 @@ class AnswerTest < ActiveSupport::TestCase
 
   test "all amswers belong to some question" do
     a = Answer.create(body: "Test Body")
-    refute a.valid?
+    assert a.valid?
   end
 end

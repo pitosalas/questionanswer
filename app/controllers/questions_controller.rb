@@ -49,7 +49,6 @@ class QuestionsController < ApplicationController
 
   # DELETE /questions/1 or /questions/1.json
   def destroy
-    puts "---------------------------"
     respond_to do |format|
       if !@question.answers.empty?
         format.html { redirect_to questions_url, notice: "First delete all the answers" }
