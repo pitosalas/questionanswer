@@ -1,11 +1,11 @@
 databases:
-  - name: qa
+  - name: qadb
     databaseName: qa
     user: qa
 
 services:
   - type: web
-    name: qa
+    name: qasite
     env: ruby
     buildCommand: "./bin/render-build.sh"
     startCommand: "bundle exec puma -C config/puma.rb"
