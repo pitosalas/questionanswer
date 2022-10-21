@@ -21,7 +21,7 @@ class QuestionsControllerTest < ActionDispatch::IntegrationTest
       post questions_url, params: {question: {question: @good.question}}
     end
 
-    assert_redirected_to question_url(Question.last)
+    assert_redirected_to questions_url
   end
 
   test "should show question" do
