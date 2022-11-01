@@ -14,6 +14,8 @@ class QuestionsController < ApplicationController
 
   # GET /questions/new
   def new
+    session[:pito] = "hello world"
+    stateless = "hello world"
     @question = Question.new
   end
 
@@ -23,6 +25,8 @@ class QuestionsController < ApplicationController
 
   # POST /questions or /questions.json
   def create
+    puts "...................." + session[:pito]
+    puts stateless
     @question = Question.new(question_params)
 
     respond_to do |format|
@@ -72,6 +76,7 @@ class QuestionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
   def question_params
-    params.require(:question).permit(:question, :body, :answer)
+    out = params.require(:question).permit(:question, :body, :answer)
+    out
   end
 end
