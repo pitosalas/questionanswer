@@ -13572,3 +13572,273 @@ Processing by QuestionsController#show as HTML
 Completed 200 OK in 20ms (Views: 11.7ms | ActiveRecord: 1.1ms | Allocations: 5728)
 
 
+Started GET "/" for 127.0.0.1 at 2022-11-13 11:05:29 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (2.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (3.0ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (4.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 23.6ms | Allocations: 6274)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 1]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.6ms | Allocations: 907)
+  [1m[36mAnswer Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 3]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.9ms | Allocations: 811)
+  [1m[36mAnswer Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 4]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.8ms | Allocations: 806)
+  Rendered questions/index.html.erb within layouts/application (Duration: 51.5ms | Allocations: 14605)
+  Rendered layout layouts/application.html.erb (Duration: 54.7ms | Allocations: 17277)
+Completed 200 OK in 87ms (Views: 42.8ms | ActiveRecord: 16.0ms | Allocations: 23169)
+
+
+Started GET "/bootstrap/css/themes/prism.css" for 127.0.0.1 at 2022-11-13 11:05:29 -0500
+Started GET "/bootstrap/css/prettyquote.css" for 127.0.0.1 at 2022-11-13 11:05:29 -0500
+Started GET "/bootstrap/js/custom.js" for 127.0.0.1 at 2022-11-13 11:05:29 -0500
+  
+ActionController::RoutingError (No route matches [GET] "/bootstrap/css/themes/prism.css"):
+  
+Started GET "/bootstrap/css/custom.css" for 127.0.0.1 at 2022-11-13 11:05:29 -0500
+  
+ActionController::RoutingError (No route matches [GET] "/bootstrap/css/prettyquote.css"):
+  
+  
+ActionController::RoutingError (No route matches [GET] "/bootstrap/js/custom.js"):
+  
+Started GET "/bootstrap/js/prism.js" for 127.0.0.1 at 2022-11-13 11:05:29 -0500
+  
+ActionController::RoutingError (No route matches [GET] "/bootstrap/css/custom.css"):
+  
+
+NameError: constant WebConsole::SourceLocation not defined
+
+          source_location = SourceLocation.new(binding)
+                            ^^^^^^^^^^^^^^
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/web-console-4.2.0/lib/web_console/exception_mapper.rb:51:in `block in guess_the_first_application_binding'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/web-console-4.2.0/lib/web_console/exception_mapper.rb:50:in `each'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/web-console-4.2.0/lib/web_console/exception_mapper.rb:50:in `find'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/web-console-4.2.0/lib/web_console/exception_mapper.rb:50:in `guess_the_first_application_binding'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/web-console-4.2.0/lib/web_console/exception_mapper.rb:30:in `first'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/web-console-4.2.0/lib/web_console/session.rb:48:in `initialize'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/web-console-4.2.0/lib/web_console/session.rb:34:in `new'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/web-console-4.2.0/lib/web_console/session.rb:34:in `from'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/web-console-4.2.0/lib/web_console/middleware.rb:30:in `block in call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/web-console-4.2.0/lib/web_console/middleware.rb:17:in `catch'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/web-console-4.2.0/lib/web_console/middleware.rb:17:in `call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/actionpack-7.0.4/lib/action_dispatch/middleware/show_exceptions.rb:26:in `call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/railties-7.0.4/lib/rails/rack/logger.rb:40:in `call_app'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/railties-7.0.4/lib/rails/rack/logger.rb:25:in `block in call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/activesupport-7.0.4/lib/active_support/tagged_logging.rb:99:in `block in tagged'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/activesupport-7.0.4/lib/active_support/tagged_logging.rb:37:in `tagged'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/activesupport-7.0.4/lib/active_support/tagged_logging.rb:99:in `tagged'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/railties-7.0.4/lib/rails/rack/logger.rb:25:in `call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/sprockets-rails-3.4.2/lib/sprockets/rails/quiet_assets.rb:13:in `call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/actionpack-7.0.4/lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/actionpack-7.0.4/lib/action_dispatch/middleware/request_id.rb:26:in `call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/rack-2.2.4/lib/rack/method_override.rb:24:in `call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/rack-2.2.4/lib/rack/runtime.rb:22:in `call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/activesupport-7.0.4/lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/actionpack-7.0.4/lib/action_dispatch/middleware/server_timing.rb:61:in `block in call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/actionpack-7.0.4/lib/action_dispatch/middleware/server_timing.rb:26:in `collect_events'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/actionpack-7.0.4/lib/action_dispatch/middleware/server_timing.rb:60:in `call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/actionpack-7.0.4/lib/action_dispatch/middleware/executor.rb:14:in `call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/actionpack-7.0.4/lib/action_dispatch/middleware/static.rb:23:in `call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/rack-2.2.4/lib/rack/sendfile.rb:110:in `call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/actionpack-7.0.4/lib/action_dispatch/middleware/host_authorization.rb:137:in `call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/railties-7.0.4/lib/rails/engine.rb:530:in `call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/puma-5.6.5/lib/puma/configuration.rb:252:in `call'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/puma-5.6.5/lib/puma/request.rb:77:in `block in handle_request'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/puma-5.6.5/lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/puma-5.6.5/lib/puma/request.rb:76:in `handle_request'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/puma-5.6.5/lib/puma/server.rb:443:in `process_client'
+	from /Users/pitosalas/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/puma-5.6.5/lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+  
+ActionController::RoutingError (No route matches [GET] "/bootstrap/js/prism.js"):
+  
+Started GET "/bootstrap/css/postit.css" for 127.0.0.1 at 2022-11-13 11:05:29 -0500
+Started GET "/bootstrap/css/toasty.css" for 127.0.0.1 at 2022-11-13 11:05:30 -0500
+  
+ActionController::RoutingError (No route matches [GET] "/bootstrap/css/postit.css"):
+  
+Started GET "/bootstrap/images/image1.jpg" for 127.0.0.1 at 2022-11-13 11:05:30 -0500
+  
+ActionController::RoutingError (No route matches [GET] "/bootstrap/css/toasty.css"):
+  
+  
+ActionController::RoutingError (No route matches [GET] "/bootstrap/images/image1.jpg"):
+  
+Started GET "/bootstrap/css/full-width-pics.css" for 127.0.0.1 at 2022-11-13 11:05:30 -0500
+  
+ActionController::RoutingError (No route matches [GET] "/bootstrap/css/full-width-pics.css"):
+  
+Started GET "/" for 127.0.0.1 at 2022-11-13 11:05:41 -0500
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 2.1ms | Allocations: 916)
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 1]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.7ms | Allocations: 808)
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 3]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.8ms | Allocations: 808)
+  [1m[36mAnswer Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 4]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 2.2ms | Allocations: 806)
+  Rendered questions/index.html.erb within layouts/application (Duration: 11.5ms | Allocations: 4483)
+  Rendered layout layouts/application.html.erb (Duration: 12.2ms | Allocations: 5122)
+Completed 200 OK in 14ms (Views: 10.9ms | ActiveRecord: 1.8ms | Allocations: 5443)
+
+
+Started GET "/questions/2" for 127.0.0.1 at 2022-11-13 11:05:45 -0500
+Processing by QuestionsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mQuestion Load (0.5ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/questions_controller.rb:74:in `set_question'
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.7ms | Allocations: 178)
+  [1m[36mAnswer Load (0.2ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_answer_inline.html.erb:1
+  Rendered questions/_answer_inline.html.erb (Duration: 3.6ms | Allocations: 2126)
+  Rendered answers/_form.html.erb (Duration: 10.8ms | Allocations: 2767)
+  Rendered questions/show.html.erb within layouts/application (Duration: 18.6ms | Allocations: 6452)
+  Rendered layout layouts/application.html.erb (Duration: 19.7ms | Allocations: 7089)
+Completed 200 OK in 33ms (Views: 20.2ms | ActiveRecord: 2.0ms | Allocations: 12159)
+
+
+Started GET "/questions/2/answers/new" for 127.0.0.1 at 2022-11-13 11:05:49 -0500
+Processing by AnswersController#new as HTML
+  Parameters: {"question_id"=>"2"}
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/answers_controller.rb:13:in `new'
+  Rendering layout layouts/application.html.erb
+  Rendering answers/new.html.erb within layouts/application
+  Rendered answers/_form.html.erb (Duration: 1.5ms | Allocations: 1056)
+  Rendered answers/new.html.erb within layouts/application (Duration: 2.7ms | Allocations: 1266)
+  Rendered layout layouts/application.html.erb (Duration: 3.5ms | Allocations: 1970)
+Completed 200 OK in 8ms (Views: 4.7ms | ActiveRecord: 0.2ms | Allocations: 3624)
+
+
+Started POST "/questions/2/answers" for 127.0.0.1 at 2022-11-13 11:05:56 -0500
+Processing by AnswersController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "answer"=>{"body"=>"Not sure what you are asking!"}, "commit"=>"Create Answer", "question_id"=>"2"}
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/answers_controller.rb:23:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/answers_controller.rb:27:in `block in create'
+  [1m[36mAnswer Create (3.6ms)[0m  [1m[32mINSERT INTO "answers" ("body", "question_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["body", "Not sure what you are asking!"], ["question_id", 2], ["created_at", "2022-11-13 16:05:56.248856"], ["updated_at", "2022-11-13 16:05:56.248856"]]
+  ↳ app/controllers/answers_controller.rb:27:in `block in create'
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/answers_controller.rb:27:in `block in create'
+Redirected to http://0.0.0.0:3000/questions/2
+Completed 302 Found in 14ms (ActiveRecord: 4.9ms | Allocations: 4575)
+
+
+Started GET "/questions/2" for 127.0.0.1 at 2022-11-13 11:05:56 -0500
+Processing by QuestionsController#show as TURBO_STREAM
+  Parameters: {"id"=>"2"}
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/questions_controller.rb:74:in `set_question'
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.2ms | Allocations: 25)
+  [1m[36mAnswer Load (0.3ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_answer_inline.html.erb:1
+  Rendered questions/_answer_inline.html.erb (Duration: 2.3ms | Allocations: 1203)
+  Rendered answers/_form.html.erb (Duration: 1.8ms | Allocations: 667)
+  Rendered questions/show.html.erb within layouts/application (Duration: 6.4ms | Allocations: 2734)
+  Rendered layout layouts/application.html.erb (Duration: 7.2ms | Allocations: 3355)
+Completed 200 OK in 10ms (Views: 7.4ms | ActiveRecord: 0.5ms | Allocations: 4379)
+
+
+Started GET "/" for 127.0.0.1 at 2022-11-13 11:05:58 -0500
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.8ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 2.0ms | Allocations: 838)
+  [1m[36mAnswer Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 1]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 2.4ms | Allocations: 808)
+  [1m[36mAnswer Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 3]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.8ms | Allocations: 808)
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 4]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.8ms | Allocations: 806)
+  Rendered questions/index.html.erb within layouts/application (Duration: 12.3ms | Allocations: 4314)
+  Rendered layout layouts/application.html.erb (Duration: 13.7ms | Allocations: 4921)
+Completed 200 OK in 16ms (Views: 12.7ms | ActiveRecord: 2.1ms | Allocations: 5195)
+
+
+Started GET "/questions/2/answers/new" for 127.0.0.1 at 2022-11-13 11:11:53 -0500
+Processing by AnswersController#new as HTML
+  Parameters: {"question_id"=>"2"}
+  [1m[36mQuestion Load (0.4ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/answers_controller.rb:13:in `new'
+  Rendering layout layouts/application.html.erb
+  Rendering answers/new.html.erb within layouts/application
+  Rendered answers/_form.html.erb (Duration: 1.4ms | Allocations: 784)
+  Rendered answers/new.html.erb within layouts/application (Duration: 1.6ms | Allocations: 845)
+  Rendered layout layouts/application.html.erb (Duration: 2.5ms | Allocations: 1444)
+Completed 200 OK in 23ms (Views: 3.1ms | ActiveRecord: 7.5ms | Allocations: 5384)
+
+
+Started GET "/" for 127.0.0.1 at 2022-11-13 11:16:39 -0500
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (2.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 3.8ms | Allocations: 817)
+  [1m[36mAnswer Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 1]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.8ms | Allocations: 808)
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 3]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.7ms | Allocations: 808)
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 4]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.9ms | Allocations: 806)
+  Rendered questions/index.html.erb within layouts/application (Duration: 11.7ms | Allocations: 4290)
+  Rendered layout layouts/application.html.erb (Duration: 12.5ms | Allocations: 4897)
+Completed 200 OK in 14ms (Views: 9.7ms | ActiveRecord: 3.2ms | Allocations: 5165)
+
+
+Started GET "/" for 127.0.0.1 at 2022-11-13 11:17:04 -0500
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.9ms | Allocations: 817)
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 1]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.7ms | Allocations: 807)
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 3]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.7ms | Allocations: 808)
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 4]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.7ms | Allocations: 806)
+  Rendered questions/index.html.erb within layouts/application (Duration: 9.1ms | Allocations: 4286)
+  Rendered layout layouts/application.html.erb (Duration: 9.8ms | Allocations: 4893)
+Completed 200 OK in 11ms (Views: 8.8ms | ActiveRecord: 1.3ms | Allocations: 5161)
+
+
