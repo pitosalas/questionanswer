@@ -13901,3 +13901,179 @@ Processing by QuestionsController#index as HTML
 Completed 200 OK in 180ms (Views: 176.2ms | ActiveRecord: 128.3ms | Allocations: 10300)
 
 
+Started GET "/" for ::1 at 2022-11-18 09:48:14 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (2.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (3.2ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (7.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 16.8ms | Allocations: 6266)
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 3]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 0.8ms | Allocations: 911)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 4]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 0.7ms | Allocations: 808)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 5]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 0.6ms | Allocations: 807)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 6]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 0.7ms | Allocations: 807)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 7]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 0.7ms | Allocations: 807)
+  Rendered questions/index.html.erb within layouts/application (Duration: 35.2ms | Allocations: 16345)
+  Rendered layout layouts/application.html.erb (Duration: 36.6ms | Allocations: 19017)
+Completed 200 OK in 43ms (Views: 16.6ms | ActiveRecord: 21.4ms | Allocations: 24911)
+
+
+Started GET "/" for ::1 at 2022-11-18 09:48:21 -0500
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 2.1ms | Allocations: 936)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 3]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.4ms | Allocations: 809)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 4]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.1ms | Allocations: 808)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 5]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.1ms | Allocations: 807)
+  [1m[36mAnswer Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 6]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.0ms | Allocations: 807)
+  [1m[36mAnswer Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 7]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.4ms | Allocations: 807)
+  Rendered questions/index.html.erb within layouts/application (Duration: 10.7ms | Allocations: 6313)
+  Rendered layout layouts/application.html.erb (Duration: 11.3ms | Allocations: 6957)
+Completed 200 OK in 13ms (Views: 9.7ms | ActiveRecord: 2.0ms | Allocations: 7300)
+
+
+Started GET "/questions/2" for ::1 at 2022-11-18 09:48:22 -0500
+Processing by QuestionsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions" WHERE "questions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/questions_controller.rb:74:in `set_question'
+  Rendering layout layouts/application.html.erb
+  Rendering questions/show.html.erb within layouts/application
+  Rendered questions/_question_inline.html.erb (Duration: 0.6ms | Allocations: 178)
+  [1m[36mAnswer Load (0.3ms)[0m  [1m[34mSELECT "answers".* FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_answer_inline.html.erb:1
+  Rendered questions/_answer_inline.html.erb (Duration: 3.2ms | Allocations: 3008)
+  Rendered answers/_form.html.erb (Duration: 5.7ms | Allocations: 2794)
+  Rendered questions/show.html.erb within layouts/application (Duration: 11.6ms | Allocations: 7359)
+  Rendered layout layouts/application.html.erb (Duration: 12.0ms | Allocations: 7997)
+Completed 200 OK in 46ms (Views: 12.1ms | ActiveRecord: 2.6ms | Allocations: 19227)
+
+
+Started GET "/questions/.json" for ::1 at 2022-11-18 09:48:26 -0500
+  
+ActionController::RoutingError (No route matches [GET] "/questions/.json"):
+  
+Started GET "/questions.json" for ::1 at 2022-11-18 09:48:34 -0500
+Processing by QuestionsController#index as JSON
+  Rendering questions/index.json.jbuilder
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.json.jbuilder:1
+  Rendered collection of questions/_question.json.jbuilder [6 times] (Duration: 9.4ms | Allocations: 6023)
+  Rendered questions/index.json.jbuilder (Duration: 12.2ms | Allocations: 7151)
+Completed 500 Internal Server Error in 15ms (ActiveRecord: 0.3ms | Allocations: 7641)
+
+
+  
+ActionView::Template::Error (undefined method `answer' for #<Question id: 2, question: "How to prevent excel from appearing and disappeari...", body: "No matter !!hat lang every time I have written cod...", created_at: "2022-10-09 23:03:45.419208000 +0000", updated_at: "2022-10-13 20:31:57.250220000 +0000">
+Did you mean?  answers
+               answers=):
+    1: json.extract! question, :id, :question, :answer, :created_at, :updated_at
+    2: json.url question_url(question, format: :json)
+  
+app/views/questions/_question.json.jbuilder:1
+app/views/questions/index.json.jbuilder:1
+Started GET "/" for ::1 at 2022-11-18 10:13:41 -0500
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.5ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.3ms | Allocations: 928)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 3]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 0.9ms | Allocations: 808)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 4]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 0.6ms | Allocations: 808)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 5]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 0.6ms | Allocations: 807)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 6]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 0.8ms | Allocations: 807)
+  [1m[36mAnswer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 7]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 0.8ms | Allocations: 807)
+  Rendered questions/index.html.erb within layouts/application (Duration: 18.1ms | Allocations: 9129)
+  Rendered layout layouts/application.html.erb (Duration: 18.5ms | Allocations: 9769)
+Completed 200 OK in 19ms (Views: 18.7ms | ActiveRecord: 8.2ms | Allocations: 10043)
+
+
+Started GET "/" for ::1 at 2022-11-18 10:13:57 -0500
+Processing by QuestionsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering questions/index.html.erb within layouts/application
+  [1m[36mQuestion Load (0.5ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.html.erb:15
+  [1m[36mAnswer Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 2]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 2.3ms | Allocations: 817)
+  [1m[36mAnswer Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 3]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.3ms | Allocations: 809)
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 4]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.2ms | Allocations: 808)
+  [1m[36mAnswer Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 5]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 2.4ms | Allocations: 807)
+  [1m[36mAnswer Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 6]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.5ms | Allocations: 807)
+  [1m[36mAnswer Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "answers" WHERE "answers"."question_id" = $1[0m  [["question_id", 7]]
+  ↳ app/views/questions/_question_row.html.erb:7
+  Rendered questions/_question_row.html.erb (Duration: 1.8ms | Allocations: 807)
+  Rendered questions/index.html.erb within layouts/application (Duration: 14.7ms | Allocations: 6018)
+  Rendered layout layouts/application.html.erb (Duration: 15.4ms | Allocations: 6625)
+Completed 200 OK in 17ms (Views: 12.6ms | ActiveRecord: 3.2ms | Allocations: 6894)
+
+
+Started GET "/questions.json" for ::1 at 2022-11-18 10:14:03 -0500
+Processing by QuestionsController#index as JSON
+  Rendering questions/index.json.jbuilder
+  [1m[36mQuestion Load (0.3ms)[0m  [1m[34mSELECT "questions".* FROM "questions"[0m
+  ↳ app/views/questions/index.json.jbuilder:1
+  Rendered collection of questions/_question.json.jbuilder [6 times] (Duration: 6.7ms | Allocations: 5626)
+  Rendered questions/index.json.jbuilder (Duration: 9.6ms | Allocations: 6384)
+Completed 500 Internal Server Error in 11ms (ActiveRecord: 0.3ms | Allocations: 6667)
+
+
+  
+ActionView::Template::Error (undefined method `answer' for #<Question id: 2, question: "How to prevent excel from appearing and disappeari...", body: "No matter !!hat lang every time I have written cod...", created_at: "2022-10-09 23:03:45.419208000 +0000", updated_at: "2022-10-13 20:31:57.250220000 +0000">
+Did you mean?  answers
+               answers=):
+    1: json.extract! question, :id, :question, :answer, :created_at, :updated_at
+    2: json.url question_url(question, format: :json)
+  
+app/views/questions/_question.json.jbuilder:1
+app/views/questions/index.json.jbuilder:1
