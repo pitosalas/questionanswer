@@ -35,9 +35,7 @@ class AnswersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update answer" do
-    puts @answer.id
     patch question_answer_url(@question, @answer), params: {answer: {body: @answer.body, question_id: @answer.question_id}}
-    puts @answer.id
     assert_redirected_to question_url(@question)
   end
 

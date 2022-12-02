@@ -57,11 +57,9 @@ class AnswersController < ApplicationController
       redirect = question_url(@question)
       notice = "First delete all the comments"
     elsif @answer.destroy
-      puts "--"
       redirect = question_url(@question)
       notice = "Answer was successfully destroyed."
     else
-      puts "----"
       redirect = question_url(@question)
       notice = "Answer could not be destroyed."
     end

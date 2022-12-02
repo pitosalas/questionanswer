@@ -14,3 +14,4 @@
 <div class="btn-group btn-group-sm" role="group">
   <%= link_to "Add an answer", new_question_answer_path(@question) , class: "btn btn-secondary m-1" %>
 </div>
+<%= render partial: "/answers/form", locals: { question: @question, answer: @answer } %>
